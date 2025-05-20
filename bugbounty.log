@@ -1,0 +1,77 @@
+2025-05-20 04:50:06,387 - WARNING - No programs in database. Running update automatically.
+2025-05-20 04:50:06,387 - INFO - Fetching HackerOne programs...
+2025-05-20 04:50:14,939 - INFO - Fetched 100 HackerOne programs so far
+2025-05-20 04:50:26,821 - INFO - Fetched 200 HackerOne programs so far
+2025-05-20 04:50:36,933 - INFO - Fetched 300 HackerOne programs so far
+2025-05-20 04:50:47,681 - INFO - Fetched 400 HackerOne programs so far
+2025-05-20 04:50:57,958 - INFO - Fetched 456 HackerOne programs so far
+2025-05-20 04:50:57,976 - INFO - Processed 456 HackerOne programs
+2025-05-20 04:50:58,021 - INFO - Added 456 new programs, updated 0 existing programs
+2025-05-20 04:50:58,021 - INFO - Fetching Bugcrowd programs...
+2025-05-20 04:50:58,484 - ERROR - Error fetching Bugcrowd programs: 404
+2025-05-20 04:50:58,485 - INFO - Program data update complete
+2025-05-20 04:50:58,499 - INFO - Found 456 programs matching the criteria
+2025-05-20 04:51:13,559 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-20 05:08:08,625 - INFO - Found 456 programs matching the criteria
+2025-05-20 05:08:27,611 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-20 05:08:51,647 - INFO - Found 456 programs matching the criteria
+2025-05-20 05:09:07,911 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-20 05:26:35,647 - INFO - Found 456 programs matching the criteria
+2025-05-20 05:26:49,625 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-20 05:26:49,639 - INFO - Recommendations saved to recommendations.json
+2025-05-20 05:34:50,089 - INFO - Found 456 programs matching the criteria
+2025-05-20 05:35:09,799 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-20 05:35:09,814 - INFO - Recommendations saved to recommendations.json
+2025-05-20 05:38:23,769 - INFO - Found 456 programs matching the criteria
+2025-05-20 05:38:38,999 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-20 05:38:39,014 - INFO - Recommendations saved to debug.json
+2025-05-20 05:54:37,648 - INFO - Starting autonomous cycle
+2025-05-20 05:54:37,648 - WARNING - No targets available for processing
+2025-05-20 05:55:06,833 - INFO - Starting autonomous cycle
+2025-05-20 05:55:06,833 - INFO - Processing target: peloton
+2025-05-20 05:55:20,397 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-20 05:55:20,411 - INFO - No steps to execute for None
+2025-05-20 05:55:30,690 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-20 05:55:30,734 - INFO - Generated analysis for peloton, saved to workspace/peloton/agent_analysis.json
+2025-05-20 05:55:30,737 - INFO - Generated progress report: workspace/peloton/agent_progress_report.json
+2025-05-20 05:55:30,737 - INFO - Generated progress report: agent_progress_report.json
+2025-05-20 05:55:30,738 - INFO - Autonomous cycle completed
+2025-05-20 05:58:53,873 - INFO - Starting content discovery for peloton
+2025-05-20 05:58:53,874 - INFO - Found 1 hosts to scan
+2025-05-20 05:58:53,881 - INFO - Using wordlist: /usr/share/wordlists/dirb/common.txt
+2025-05-20 05:58:53,882 - INFO - Running: ffuf -u https://peloton/FUZZ -w /usr/share/wordlists/dirb/common.txt -e php,html,js,txt,json,xml,config,bak,old,backup,sql,env -mc 200,201,202,203,204,301,302,307,401,403,405 -t 10 -recursion -recursion-depth 2 -timeout 30 -o workspace/peloton/content_discovery/peloton_ffuf.json -of json
+2025-05-20 06:00:54,530 - INFO - Completed ffuf scan on https://peloton
+2025-05-20 06:00:54,530 - INFO - Running: httpx -u https://peloton -silent -tech-detect -title -status-code -follow-redirects -no-color -json -o workspace/peloton/content_discovery/peloton_httpx.json
+2025-05-20 06:00:54,714 - ERROR - Error running httpx on https://peloton: Command 'httpx -u https://peloton -silent -tech-detect -title -status-code -follow-redirects -no-color -json -o workspace/peloton/content_discovery/peloton_httpx.json' returned non-zero exit status 1.
+2025-05-20 06:00:54,902 - INFO - Completed vulnerability checks on https://peloton, found 0 potentially interesting endpoints
+2025-05-20 06:00:54,903 - INFO - Saved 0 new endpoints to database
+2025-05-20 06:00:54,904 - INFO - Content discovery complete for peloton
+2025-05-20 06:00:54,904 - INFO - Found 0 total endpoints, 0 marked as interesting
+2025-05-20 06:00:54,904 - INFO - Summary saved to workspace/peloton/content_discovery/summary.json
+2025-05-20 06:06:04,505 - INFO - Starting content discovery for onepeloton.com
+2025-05-20 06:06:04,506 - INFO - Found 1 hosts to scan
+2025-05-20 06:06:04,506 - INFO - Using wordlist: /usr/share/wordlists/dirb/common.txt
+2025-05-20 06:06:04,507 - INFO - Running: ffuf -u https://onepeloton.com/FUZZ -w /usr/share/wordlists/dirb/common.txt -e php,html,js,txt,json,xml,config,bak,old,backup,sql,env -mc 200,201,202,203,204,301,302,307,401,403,405 -t 10 -recursion -recursion-depth 2 -timeout 30 -o workspace/onepeloton.com/content_discovery/onepeloton.com_ffuf.json -of json
+2025-05-20 06:09:11,255 - INFO - Completed ffuf scan on https://onepeloton.com
+2025-05-20 06:09:11,256 - INFO - Running: httpx -u https://onepeloton.com -silent -tech-detect -title -status-code -follow-redirects -no-color -json -o workspace/onepeloton.com/content_discovery/onepeloton.com_httpx.json
+2025-05-20 06:09:11,434 - ERROR - Error running httpx on https://onepeloton.com: Command 'httpx -u https://onepeloton.com -silent -tech-detect -title -status-code -follow-redirects -no-color -json -o workspace/onepeloton.com/content_discovery/onepeloton.com_httpx.json' returned non-zero exit status 2.
+2025-05-20 06:09:26,461 - INFO - Found interesting endpoint: https://onepeloton.com/.DS_Store [403]
+2025-05-20 06:09:26,709 - INFO - Found interesting endpoint: https://onepeloton.com/backup.zip [403]
+2025-05-20 06:09:26,967 - INFO - Found interesting endpoint: https://onepeloton.com/dump.sql [403]
+2025-05-20 06:09:27,218 - INFO - Found interesting endpoint: https://onepeloton.com/api/swagger [403]
+2025-05-20 06:09:27,481 - INFO - Found interesting endpoint: https://onepeloton.com/api/docs [403]
+2025-05-20 06:09:27,481 - INFO - Completed vulnerability checks on https://onepeloton.com, found 5 potentially interesting endpoints
+2025-05-20 06:09:53,988 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-20 06:09:54,027 - INFO - Saved 18 new endpoints to database
+2025-05-20 06:09:54,028 - INFO - Content discovery complete for onepeloton.com
+2025-05-20 06:09:54,028 - INFO - Found 18 total endpoints, 11 marked as interesting
+2025-05-20 06:09:54,028 - INFO - Summary saved to workspace/onepeloton.com/content_discovery/summary.json
+2025-05-20 06:12:18,749 - INFO - Starting autonomous cycle
+2025-05-20 06:12:18,749 - INFO - Processing target: onepeloton.com
+2025-05-20 06:12:33,026 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-20 06:12:33,044 - INFO - No steps to execute for None
+2025-05-20 06:12:53,727 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-20 06:12:53,770 - INFO - Generated analysis for onepeloton.com, saved to workspace/onepeloton.com/agent_analysis.json
+2025-05-20 06:12:53,771 - INFO - Generated progress report: workspace/onepeloton.com/agent_progress_report.json
+2025-05-20 06:12:53,773 - INFO - Generated progress report: agent_progress_report.json
+2025-05-20 06:12:53,773 - INFO - Autonomous cycle completed

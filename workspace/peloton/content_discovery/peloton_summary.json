@@ -1,0 +1,10 @@
+{
+  "host": "https://peloton",
+  "total_endpoints": 0,
+  "interesting_endpoints": 0,
+  "high_interest": 0,
+  "medium_interest": 0,
+  "low_interest": 0,
+  "status_codes": {},
+  "top_vulnerabilities": []
+}

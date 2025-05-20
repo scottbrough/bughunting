@@ -1,0 +1,22 @@
+{
+  "target": "peloton",
+  "hosts_scanned": 1,
+  "total_endpoints": 0,
+  "interesting_endpoints": 0,
+  "high_interest": 0,
+  "medium_interest": 0,
+  "low_interest": 0,
+  "host_summaries": [
+    {
+      "host": "https://peloton",
+      "total_endpoints": 0,
+      "interesting_endpoints": 0,
+      "high_interest": 0,
+      "medium_interest": 0,
+      "low_interest": 0,
+      "status_codes": {},
+      "top_vulnerabilities": []
+    }
+  ],
+  "date": "2025-05-20T06:00:54.904092"
+}

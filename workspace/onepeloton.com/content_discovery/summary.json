@@ -1,0 +1,46 @@
+{
+  "target": "onepeloton.com",
+  "hosts_scanned": 1,
+  "total_endpoints": 18,
+  "interesting_endpoints": 11,
+  "high_interest": 6,
+  "medium_interest": 5,
+  "low_interest": 7,
+  "host_summaries": [
+    {
+      "host": "https://onepeloton.com",
+      "total_endpoints": 18,
+      "interesting_endpoints": 11,
+      "high_interest": 6,
+      "medium_interest": 5,
+      "low_interest": 7,
+      "status_codes": {
+        "307": 13,
+        "403": 5
+      },
+      "top_vulnerabilities": [
+        {
+          "type": "Backup File Exposure",
+          "count": 3
+        },
+        {
+          "type": "Sensitive Data Exposure",
+          "count": 2
+        },
+        {
+          "type": "Database File Exposure",
+          "count": 2
+        },
+        {
+          "type": "API Information Disclosure",
+          "count": 2
+        },
+        {
+          "type": "Configuration File Disclosure",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "date": "2025-05-20T06:09:54.028200"
+}

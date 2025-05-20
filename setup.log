@@ -1,0 +1,23 @@
+2025-05-20 04:47:11,715 - INFO - Checking Python dependencies...
+2025-05-20 04:47:16,429 - INFO - Python dependencies installed successfully.
+2025-05-20 04:47:16,437 - INFO - ✓ subfinder is installed
+2025-05-20 04:47:16,438 - INFO - ✓ httpx is installed
+2025-05-20 04:47:16,439 - INFO - ✓ amass is installed
+2025-05-20 04:47:16,441 - INFO - ✓ ffuf is installed
+2025-05-20 04:47:16,442 - WARNING - ✗ dnsx is not installed
+2025-05-20 04:47:16,443 - WARNING - ✗ assetfinder is not installed
+2025-05-20 04:47:16,443 - WARNING - The following tools are missing:
+2025-05-20 04:47:16,443 - WARNING -   - dnsx (install with: go install github.com/projectdiscovery/dnsx/cmd/dnsx@latest)
+2025-05-20 04:47:16,443 - WARNING -   - assetfinder (install with: go install github.com/tomnomnom/assetfinder@latest)
+2025-05-20 04:47:16,443 - INFO - Attempting to install Go tools...
+2025-05-20 04:47:40,650 - INFO - Successfully installed dnsx
+2025-05-20 04:47:41,639 - INFO - Successfully installed assetfinder
+2025-05-20 04:47:41,639 - INFO - For apt packages, please run the following commands manually:
+2025-05-20 04:47:41,640 - INFO - Setting OpenAI API key...
+2025-05-20 04:47:41,640 - INFO - Adding OPENAI_API_KEY to /home/kali/.zshrc
+2025-05-20 04:47:41,640 - INFO - OpenAI API key set successfully.
+2025-05-20 04:47:41,640 - INFO - Setting up database...
+2025-05-20 04:47:41,657 - INFO - Database setup complete.
+2025-05-20 04:47:41,657 - INFO - Setting up directory structure...
+2025-05-20 04:47:41,658 - INFO - Directory structure setup complete.
+2025-05-20 04:47:41,658 - ERROR - Setup completed with errors. Please check the logs.

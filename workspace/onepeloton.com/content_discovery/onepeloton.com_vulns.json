@@ -1,0 +1,37 @@
+[
+  {
+    "url": "https://onepeloton.com/.DS_Store",
+    "status_code": 403,
+    "content_length": 23551,
+    "content_type": "text/html; charset=utf-8",
+    "interesting": true
+  },
+  {
+    "url": "https://onepeloton.com/backup.zip",
+    "status_code": 403,
+    "content_length": 23559,
+    "content_type": "text/html; charset=utf-8",
+    "interesting": true
+  },
+  {
+    "url": "https://onepeloton.com/dump.sql",
+    "status_code": 403,
+    "content_length": 23555,
+    "content_type": "text/html; charset=utf-8",
+    "interesting": true
+  },
+  {
+    "url": "https://onepeloton.com/api/swagger",
+    "status_code": 403,
+    "content_length": 23551,
+    "content_type": "text/html; charset=utf-8",
+    "interesting": true
+  },
+  {
+    "url": "https://onepeloton.com/api/docs",
+    "status_code": 403,
+    "content_length": 23555,
+    "content_type": "text/html; charset=utf-8",
+    "interesting": true
+  }
+]
