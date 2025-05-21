@@ -1,0 +1,69 @@
+2025-05-20 20:07:51,542 - discovery_agent - INFO - Starting content discovery for example.com
+2025-05-20 20:07:51,542 - discovery_agent - INFO - Found 1 hosts to scan
+2025-05-20 20:07:51,542 - discovery_agent - INFO - Using wordlist: /usr/share/wordlists/dirb/common.txt
+2025-05-20 20:07:51,549 - discovery_agent - INFO - Running: ffuf -u https://example.com/FUZZ -w /usr/share/wordlists/dirb/common.txt -e php,html,js,txt,json,xml,config,bak,old,backup,sql,env -mc 200,201,202,203,204,301,302,307,401,403,405 -t 10  -timeout 30 -o workspace/example.com/content_discovery/example.com_ffuf.json -of json
+2025-05-20 20:42:33,285 - discovery_agent - INFO - Completed ffuf scan on https://example.com
+2025-05-20 20:42:33,286 - discovery_agent - INFO - Running: httpx https://example.com -silent -tech-detect -title -status-code -follow-redirects -no-color -json -o workspace/example.com/content_discovery/example.com_httpx.json
+2025-05-20 20:42:34,096 - discovery_agent - INFO - Completed httpx scan on https://example.com
+2025-05-20 20:42:43,992 - discovery_agent - INFO - Completed vulnerability checks on https://example.com, found 0 potentially interesting endpoints
+2025-05-20 20:42:44,007 - discovery_agent - INFO - Saved 0 new endpoints to database
+2025-05-20 20:42:44,015 - discovery_agent - INFO - Sending message: 🏆 RESULT [DiscoveryAgent]: discover_endpoints
+2025-05-20 20:42:44,038 - discovery_agent - INFO - Content discovery complete for example.com
+2025-05-20 20:42:44,038 - discovery_agent - INFO - Found 2 total endpoints, 0 marked as interesting
+2025-05-20 20:42:44,039 - fuzzer_agent - INFO - Received message: 📤 REQUEST [DiscoveryAgent → FuzzerAgent]: fuzz_endpoint
+2025-05-20 20:42:44,039 - fuzzer_agent - INFO - Fuzzing https://example.com/search?q=test for vulnerabilities: sqli, xss
+2025-05-20 20:42:49,047 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-20 20:42:49,052 - fuzzer_agent - INFO - Generated 3 payloads for https://example.com/search?q=test
+2025-05-20 20:42:52,839 - fuzzer_agent - INFO - Received message: 📤 REQUEST [OrchestratorAgent → FuzzerAgent]: fuzz_target
+2025-05-20 20:42:52,839 - fuzzer_agent - INFO - Starting vulnerability fuzzing for example.com
+2025-05-20 20:42:52,840 - fuzzer_agent - ERROR - No interesting endpoints found for target: example.com
+2025-05-20 20:42:52,919 - root - INFO - Starting bug bounty workflow for example.com
+2025-05-20 20:42:52,926 - fuzzer_agent - INFO - Received message: 📤 REQUEST [OrchestratorAgent → FuzzerAgent]: fuzz_target
+2025-05-20 20:42:52,927 - fuzzer_agent - INFO - Starting vulnerability fuzzing for example.com
+2025-05-20 20:42:52,927 - fuzzer_agent - ERROR - No interesting endpoints found for target: example.com
+2025-05-20 20:54:15,276 - discovery_agent - INFO - Starting content discovery for example.com
+2025-05-20 20:54:15,277 - discovery_agent - INFO - Found 1 hosts to scan
+2025-05-20 20:54:15,277 - discovery_agent - INFO - Using wordlist: /usr/share/wordlists/dirb/common.txt
+2025-05-20 20:54:15,283 - discovery_agent - INFO - Running: ffuf -u https://example.com/FUZZ -w /usr/share/wordlists/dirb/common.txt -e php,html,js,txt,json,xml,config,bak,old,backup,sql,env -mc 200,201,202,203,204,301,302,307,401,403,405 -t 10  -timeout 30 -o workspace/example.com/content_discovery/example.com_ffuf.json -of json
+2025-05-20 21:27:23,287 - discovery_agent - INFO - Completed ffuf scan on https://example.com
+2025-05-20 21:27:23,290 - discovery_agent - INFO - Running: httpx https://example.com -silent -tech-detect -title -status-code -follow-redirects -no-color -json -o workspace/example.com/content_discovery/example.com_httpx.json
+2025-05-20 21:27:23,702 - discovery_agent - INFO - Completed httpx scan on https://example.com
+2025-05-20 21:27:29,711 - discovery_agent - INFO - Completed vulnerability checks on https://example.com, found 0 potentially interesting endpoints
+2025-05-20 21:27:29,713 - discovery_agent - INFO - Adding endpoint https://example.com/ (Interesting: True, Reason: Default interesting marking)
+2025-05-20 21:27:29,713 - discovery_agent - INFO - Adding endpoint https://example.com/index.html (Interesting: True, Reason: Default interesting marking)
+2025-05-20 21:27:29,714 - discovery_agent - INFO - Parsed 2 endpoints from ffuf results
+2025-05-20 21:27:29,726 - discovery_agent - INFO - Saved 0 new endpoints and updated 2 existing endpoints in database
+2025-05-20 21:27:29,732 - discovery_agent - INFO - Sending message: 🏆 RESULT [DiscoveryAgent]: discover_endpoints
+2025-05-20 21:27:29,752 - discovery_agent - INFO - Content discovery complete for example.com
+2025-05-20 21:27:29,752 - discovery_agent - INFO - Found 2 total endpoints, 2 marked as interesting
+2025-05-20 21:27:29,753 - fuzzer_agent - INFO - Received message: 📤 REQUEST [DiscoveryAgent → FuzzerAgent]: fuzz_endpoint
+2025-05-20 21:27:29,753 - fuzzer_agent - INFO - Fuzzing https://example.com/ for vulnerabilities: xss, sqli
+2025-05-20 21:27:33,867 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-20 21:27:33,871 - fuzzer_agent - INFO - Generated 3 payloads for https://example.com/
+2025-05-20 21:27:36,076 - fuzzer_agent - INFO - Received message: 📤 REQUEST [OrchestratorAgent → FuzzerAgent]: fuzz_target
+2025-05-20 21:27:36,076 - fuzzer_agent - INFO - Starting vulnerability fuzzing for example.com
+2025-05-20 21:27:36,076 - fuzzer_agent - INFO - Retrieved 2 endpoints for testing
+2025-05-20 21:27:36,076 - fuzzer_agent - INFO - Found 2 endpoints to test
+2025-05-20 21:27:36,085 - fuzzer_agent - INFO - Fuzzing https://example.com/index.html for vulnerabilities: xss, sqli
+2025-05-20 21:27:36,086 - fuzzer_agent - INFO - Fuzzing https://example.com/ for vulnerabilities: xss, sqli
+2025-05-20 21:27:40,151 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-20 21:27:40,153 - fuzzer_agent - INFO - Generated 3 payloads for https://example.com/
+2025-05-20 21:27:41,174 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-20 21:27:41,176 - fuzzer_agent - INFO - Generated 3 payloads for https://example.com/index.html
+2025-05-20 21:27:44,998 - fuzzer_agent - INFO - Sending message: 🏆 RESULT [FuzzerAgent]: fuzz_target
+2025-05-20 21:27:45,027 - fuzzer_agent - INFO - Fuzzing complete for example.com
+2025-05-20 21:27:45,027 - fuzzer_agent - INFO - Found 0 vulnerabilities, created 0 findings
+2025-05-20 21:27:45,102 - root - INFO - Starting bug bounty workflow for example.com
+2025-05-20 21:27:45,106 - fuzzer_agent - INFO - Received message: 📤 REQUEST [OrchestratorAgent → FuzzerAgent]: fuzz_target
+2025-05-20 21:27:45,106 - fuzzer_agent - INFO - Starting vulnerability fuzzing for example.com
+2025-05-20 21:27:45,107 - fuzzer_agent - INFO - Retrieved 2 endpoints for testing
+2025-05-20 21:27:45,107 - fuzzer_agent - INFO - Found 2 endpoints to test
+2025-05-20 21:27:45,111 - fuzzer_agent - INFO - Fuzzing https://example.com/ for vulnerabilities: xss, sqli, ssrf, lfi, rce, idor
+2025-05-20 21:27:45,111 - fuzzer_agent - INFO - Fuzzing https://example.com/index.html for vulnerabilities: xss, sqli, ssrf, lfi, rce, idor
+2025-05-20 21:27:48,451 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-20 21:27:48,452 - fuzzer_agent - INFO - Generated 3 payloads for https://example.com/
+2025-05-20 21:27:50,235 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-20 21:27:50,238 - fuzzer_agent - INFO - Generated 3 payloads for https://example.com/index.html
+2025-05-20 21:27:51,849 - fuzzer_agent - INFO - Sending message: 🏆 RESULT [FuzzerAgent]: fuzz_target
+2025-05-20 21:27:51,871 - fuzzer_agent - INFO - Fuzzing complete for example.com
+2025-05-20 21:27:51,872 - fuzzer_agent - INFO - Found 0 vulnerabilities, created 0 findings

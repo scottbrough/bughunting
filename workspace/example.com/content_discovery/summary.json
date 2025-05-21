@@ -1,0 +1,7 @@
+{
+  "target": "example.com",
+  "hosts_scanned": 1,
+  "total_endpoints": 2,
+  "interesting_endpoints": 2,
+  "date": "2025-05-20T21:27:29.726988"
+}

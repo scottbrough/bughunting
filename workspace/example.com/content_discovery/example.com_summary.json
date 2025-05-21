@@ -1,0 +1,27 @@
+{
+  "host": "https://example.com",
+  "total_endpoints": 2,
+  "interesting_endpoints": 2,
+  "endpoints": [
+    {
+      "url": "https://example.com/",
+      "status_code": 200,
+      "content_length": 1256,
+      "content_type": "",
+      "words": 298,
+      "interesting": true,
+      "interesting_reason": "Default interesting marking",
+      "interest_level": "medium"
+    },
+    {
+      "url": "https://example.com/index.html",
+      "status_code": 200,
+      "content_length": 1256,
+      "content_type": "",
+      "words": 298,
+      "interesting": true,
+      "interesting_reason": "Default interesting marking",
+      "interest_level": "medium"
+    }
+  ]
+}

