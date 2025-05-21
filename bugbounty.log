@@ -3525,3 +3525,463 @@ Content discovery cancelled by user.
 2025-05-21 02:40:01,600 - INFO - Found 458 programs matching the criteria
 2025-05-21 02:40:08,908 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
 2025-05-21 02:40:08,925 - INFO - Recommendations saved to recommendations.csv
+2025-05-21 03:10:54,048 - INFO - Starting batch content discovery for 1 targets
+2025-05-21 03:10:54,048 - INFO - Starting content discovery for krisp.ai
+2025-05-21 03:10:54,049 - INFO - Found 1 hosts to scan for krisp.ai
+2025-05-21 03:10:54,049 - INFO - Using wordlist: /usr/share/wordlists/dirb/common.txt
+2025-05-21 03:10:54,050 - INFO - Starting discovery on https://krisp.ai for target krisp.ai
+2025-05-21 03:10:54,050 - INFO - Running: ffuf -u https://krisp.ai/FUZZ -w /usr/share/wordlists/dirb/common.txt -e php,html,js,txt,json,xml,config,bak,old,backup,sql,env -mc 200,201,202,203,204,301,302,307,401,403,405 -t 10 -recursion -recursion-depth 3 -timeout 3 -rate 10 -maxtime 300 -o workspace/krisp.ai/content_discovery/krisp.ai_ffuf.json -of json
+2025-05-21 03:15:54,669 - INFO - Completed ffuf scan on https://krisp.ai
+2025-05-21 03:15:54,669 - INFO - Running: httpx -u https://krisp.ai -silent -tech-detect -title -status-code -follow-redirects -no-color -json -o workspace/krisp.ai/content_discovery/krisp.ai_httpx.json -timeout 10
+2025-05-21 03:15:54,781 - INFO - Completed httpx scan on https://krisp.ai
+2025-05-21 03:15:54,902 - INFO - Found interesting endpoint: https://krisp.ai/.git/HEAD [403]
+2025-05-21 03:15:54,929 - INFO - Found interesting endpoint: https://krisp.ai/wp-config.php [403]
+2025-05-21 03:15:54,932 - INFO - Found interesting endpoint: https://krisp.ai/.env [403]
+2025-05-21 03:15:55,069 - INFO - Found interesting endpoint: https://krisp.ai/phpinfo.php [403]
+2025-05-21 03:15:55,195 - INFO - Found interesting endpoint: https://krisp.ai/.svn/entries [403]
+2025-05-21 03:15:55,324 - INFO - Found interesting endpoint: https://krisp.ai/.DS_Store [403]
+2025-05-21 03:16:01,006 - INFO - Completed vulnerability checks on https://krisp.ai, found 6 potentially interesting endpoints
+2025-05-21 03:16:01,007 - INFO - Adding endpoint https://krisp.ai/ (Interesting: False, Reason: Default interesting marking)
+2025-05-21 03:16:01,007 - INFO - Adding endpoint https://krisp.ai/env (Interesting: False, Reason: Default interesting marking)
+2025-05-21 03:16:01,007 - INFO - Adding endpoint https://krisp.ai/.bash_history (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.bash_history)
+2025-05-21 03:16:01,007 - INFO - Adding endpoint https://krisp.ai/backup (Interesting: True, Reason: Sensitive path component found: https://krisp.ai/backup)
+2025-05-21 03:16:01,007 - INFO - Adding endpoint https://krisp.ai/.bashrc (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.bashrc)
+2025-05-21 03:16:01,007 - INFO - Adding endpoint https://krisp.ai/.cvs (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.cvs)
+2025-05-21 03:16:01,007 - INFO - Adding endpoint https://krisp.ai/.forward (Interesting: False, Reason: Default interesting marking)
+2025-05-21 03:16:01,007 - INFO - Adding endpoint https://krisp.ai/.git/HEAD (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.git/HEAD)
+2025-05-21 03:16:01,007 - INFO - Adding endpoint https://krisp.ai/.git/HEADphp (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.git/HEADphp)
+2025-05-21 03:16:01,007 - INFO - Adding endpoint https://krisp.ai/.git/HEADhtml (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.git/HEADhtml)
+2025-05-21 03:16:01,007 - INFO - Adding endpoint https://krisp.ai/.git/HEADjs (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.git/HEADjs)
+2025-05-21 03:16:01,008 - INFO - Adding endpoint https://krisp.ai/.git/HEADtxt (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.git/HEADtxt)
+2025-05-21 03:16:01,008 - INFO - Adding endpoint https://krisp.ai/.git/HEADjson (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.git/HEADjson)
+2025-05-21 03:16:01,008 - INFO - Adding endpoint https://krisp.ai/.git/HEADxml (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.git/HEADxml)
+2025-05-21 03:16:01,008 - INFO - Adding endpoint https://krisp.ai/.git/HEADbak (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.git/HEADbak)
+2025-05-21 03:16:01,008 - INFO - Adding endpoint https://krisp.ai/.git/HEADconfig (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.git/HEADconfig)
+2025-05-21 03:16:01,008 - INFO - Adding endpoint https://krisp.ai/.git/HEADold (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.git/HEADold)
+2025-05-21 03:16:01,008 - INFO - Adding endpoint https://krisp.ai/.git/HEADbackup (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.git/HEADbackup)
+2025-05-21 03:16:01,008 - INFO - Adding endpoint https://krisp.ai/.git/HEADsql (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.git/HEADsql)
+2025-05-21 03:16:01,008 - INFO - Adding endpoint https://krisp.ai/.git/HEADenv (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.git/HEADenv)
+2025-05-21 03:16:01,008 - INFO - Adding endpoint https://krisp.ai/.history (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.history)
+2025-05-21 03:16:01,008 - INFO - Adding endpoint https://krisp.ai/.hta (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.hta)
+2025-05-21 03:16:01,008 - INFO - Adding endpoint https://krisp.ai/.htaphp (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htaphp)
+2025-05-21 03:16:01,008 - INFO - Adding endpoint https://krisp.ai/.htahtml (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htahtml)
+2025-05-21 03:16:01,008 - INFO - Adding endpoint https://krisp.ai/.htajs (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htajs)
+2025-05-21 03:16:01,008 - INFO - Adding endpoint https://krisp.ai/.htatxt (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htatxt)
+2025-05-21 03:16:01,008 - INFO - Adding endpoint https://krisp.ai/.htajson (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htajson)
+2025-05-21 03:16:01,008 - INFO - Adding endpoint https://krisp.ai/.htaxml (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htaxml)
+2025-05-21 03:16:01,008 - INFO - Adding endpoint https://krisp.ai/.htaconfig (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htaconfig)
+2025-05-21 03:16:01,008 - INFO - Adding endpoint https://krisp.ai/.htabak (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htabak)
+2025-05-21 03:16:01,008 - INFO - Adding endpoint https://krisp.ai/.htaold (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htaold)
+2025-05-21 03:16:01,009 - INFO - Adding endpoint https://krisp.ai/.htabackup (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htabackup)
+2025-05-21 03:16:01,009 - INFO - Adding endpoint https://krisp.ai/.htasql (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htasql)
+2025-05-21 03:16:01,009 - INFO - Adding endpoint https://krisp.ai/.htaenv (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htaenv)
+2025-05-21 03:16:01,009 - INFO - Adding endpoint https://krisp.ai/.htaccess (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htaccess)
+2025-05-21 03:16:01,009 - INFO - Adding endpoint https://krisp.ai/.htaccessphp (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htaccessphp)
+2025-05-21 03:16:01,009 - INFO - Adding endpoint https://krisp.ai/.htaccesshtml (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htaccesshtml)
+2025-05-21 03:16:01,009 - INFO - Adding endpoint https://krisp.ai/.htaccessjs (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htaccessjs)
+2025-05-21 03:16:01,009 - INFO - Adding endpoint https://krisp.ai/.htaccesstxt (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htaccesstxt)
+2025-05-21 03:16:01,009 - INFO - Adding endpoint https://krisp.ai/.htaccessjson (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htaccessjson)
+2025-05-21 03:16:01,009 - INFO - Adding endpoint https://krisp.ai/.htaccessxml (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htaccessxml)
+2025-05-21 03:16:01,009 - INFO - Adding endpoint https://krisp.ai/.htaccessconfig (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htaccessconfig)
+2025-05-21 03:16:01,009 - INFO - Adding endpoint https://krisp.ai/.htaccessold (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htaccessold)
+2025-05-21 03:16:01,009 - INFO - Adding endpoint https://krisp.ai/.htaccessbak (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htaccessbak)
+2025-05-21 03:16:01,009 - INFO - Adding endpoint https://krisp.ai/.htaccessbackup (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htaccessbackup)
+2025-05-21 03:16:01,009 - INFO - Adding endpoint https://krisp.ai/.htaccesssql (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htaccesssql)
+2025-05-21 03:16:01,009 - INFO - Adding endpoint https://krisp.ai/.htaccessenv (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htaccessenv)
+2025-05-21 03:16:01,009 - INFO - Adding endpoint https://krisp.ai/.htpasswd (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htpasswd)
+2025-05-21 03:16:01,009 - INFO - Adding endpoint https://krisp.ai/.htpasswdphp (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htpasswdphp)
+2025-05-21 03:16:01,009 - INFO - Adding endpoint https://krisp.ai/.htpasswdjs (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htpasswdjs)
+2025-05-21 03:16:01,009 - INFO - Adding endpoint https://krisp.ai/.htpasswdtxt (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htpasswdtxt)
+2025-05-21 03:16:01,009 - INFO - Adding endpoint https://krisp.ai/.htpasswdjson (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htpasswdjson)
+2025-05-21 03:16:01,009 - INFO - Adding endpoint https://krisp.ai/.htpasswdxml (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htpasswdxml)
+2025-05-21 03:16:01,009 - INFO - Adding endpoint https://krisp.ai/.htpasswdconfig (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htpasswdconfig)
+2025-05-21 03:16:01,009 - INFO - Adding endpoint https://krisp.ai/.htpasswdbak (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htpasswdbak)
+2025-05-21 03:16:01,009 - INFO - Adding endpoint https://krisp.ai/.htpasswdold (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htpasswdold)
+2025-05-21 03:16:01,009 - INFO - Adding endpoint https://krisp.ai/.htpasswdbackup (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htpasswdbackup)
+2025-05-21 03:16:01,009 - INFO - Adding endpoint https://krisp.ai/.htpasswdsql (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htpasswdsql)
+2025-05-21 03:16:01,010 - INFO - Adding endpoint https://krisp.ai/.htpasswdenv (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htpasswdenv)
+2025-05-21 03:16:01,010 - INFO - Adding endpoint https://krisp.ai/.mysql_history (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.mysql_history)
+2025-05-21 03:16:01,010 - INFO - Adding endpoint https://krisp.ai/.passwd (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.passwd)
+2025-05-21 03:16:01,010 - INFO - Adding endpoint https://krisp.ai/.perf (Interesting: False, Reason: Default interesting marking)
+2025-05-21 03:16:01,010 - INFO - Adding endpoint https://krisp.ai/.profile (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.profile)
+2025-05-21 03:16:01,010 - INFO - Adding endpoint https://krisp.ai/.ssh (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.ssh)
+2025-05-21 03:16:01,010 - INFO - Adding endpoint https://krisp.ai/.svn (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.svn)
+2025-05-21 03:16:01,010 - INFO - Adding endpoint https://krisp.ai/.svn/entries (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.svn/entries)
+2025-05-21 03:16:01,010 - INFO - Adding endpoint https://krisp.ai/.svn/entriesphp (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.svn/entriesphp)
+2025-05-21 03:16:01,010 - INFO - Adding endpoint https://krisp.ai/.svn/entrieshtml (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.svn/entrieshtml)
+2025-05-21 03:16:01,010 - INFO - Adding endpoint https://krisp.ai/.svn/entriesjs (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.svn/entriesjs)
+2025-05-21 03:16:01,010 - INFO - Adding endpoint https://krisp.ai/.svn/entriestxt (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.svn/entriestxt)
+2025-05-21 03:16:01,010 - INFO - Adding endpoint https://krisp.ai/.svn/entriesjson (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.svn/entriesjson)
+2025-05-21 03:16:01,010 - INFO - Adding endpoint https://krisp.ai/.svn/entriesxml (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.svn/entriesxml)
+2025-05-21 03:16:01,010 - INFO - Adding endpoint https://krisp.ai/.svn/entriesbak (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.svn/entriesbak)
+2025-05-21 03:16:01,010 - INFO - Adding endpoint https://krisp.ai/.svn/entriesconfig (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.svn/entriesconfig)
+2025-05-21 03:16:01,010 - INFO - Adding endpoint https://krisp.ai/.svn/entriesold (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.svn/entriesold)
+2025-05-21 03:16:01,010 - INFO - Adding endpoint https://krisp.ai/.svn/entriesbackup (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.svn/entriesbackup)
+2025-05-21 03:16:01,010 - INFO - Adding endpoint https://krisp.ai/.svn/entriessql (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.svn/entriessql)
+2025-05-21 03:16:01,010 - INFO - Adding endpoint https://krisp.ai/.svn/entriesenv (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.svn/entriesenv)
+2025-05-21 03:16:01,010 - INFO - Adding endpoint https://krisp.ai/.web (Interesting: False, Reason: Default interesting marking)
+2025-05-21 03:16:01,010 - INFO - Adding endpoint https://krisp.ai/@backup (Interesting: True, Reason: Sensitive path component found: https://krisp.ai/@backup)
+2025-05-21 03:16:01,010 - INFO - Adding endpoint https://krisp.ai/@env (Interesting: False, Reason: Default interesting marking)
+2025-05-21 03:16:01,010 - INFO - Parsed 81 endpoints from ffuf results
+2025-05-21 03:16:01,011 - INFO - Completed discovery on https://krisp.ai in 306.96 seconds
+2025-05-21 03:16:01,011 - INFO - Processed https://krisp.ai for krisp.ai: found 87 endpoints
+2025-05-21 03:16:01,012 - WARNING - Limiting endpoints for classification to 25 (from 87)
+2025-05-21 03:16:01,012 - INFO - Starting batch AI classification for 25 endpoints
+2025-05-21 03:16:01,012 - INFO - Processing batch 1/1 (25 endpoints)
+2025-05-21 03:16:10,681 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:16:10,685 - INFO - Completed AI classification for 25 endpoints
+2025-05-21 03:16:10,699 - INFO - Saved 25 new endpoints and updated 0 existing endpoints in database
+2025-05-21 03:16:10,700 - INFO - Content discovery complete for krisp.ai in 316.65 seconds
+2025-05-21 03:16:10,700 - INFO - Found 25 total endpoints, 25 marked as interesting
+2025-05-21 03:22:47,092 - INFO - Starting batch content discovery for 1 targets
+2025-05-21 03:22:47,092 - INFO - Starting content discovery for krisp.ai
+2025-05-21 03:22:47,093 - INFO - Found 1 hosts to scan for krisp.ai
+2025-05-21 03:22:47,093 - INFO - Using wordlist: /usr/share/wordlists/dirb/common.txt
+2025-05-21 03:22:47,093 - INFO - Starting discovery on https://krisp.ai for target krisp.ai
+2025-05-21 03:22:47,094 - INFO - Running: ffuf -u https://krisp.ai/FUZZ -w /usr/share/wordlists/dirb/common.txt -e php,html,js,txt,json,xml,config,bak,old,backup,sql,env -mc 200,201,202,203,204,301,302,307,401,403,405 -t 10 -recursion -recursion-depth 3 -timeout 3 -rate 10 -maxtime 300 -o workspace/krisp.ai/content_discovery/krisp.ai_ffuf.json -of json
+2025-05-21 03:27:48,473 - INFO - Completed ffuf scan on https://krisp.ai
+2025-05-21 03:27:48,474 - INFO - Running: httpx -u https://krisp.ai -silent -tech-detect -title -status-code -follow-redirects -no-color -json -o workspace/krisp.ai/content_discovery/krisp.ai_httpx.json -timeout 10
+2025-05-21 03:27:48,575 - INFO - Completed httpx scan on https://krisp.ai
+2025-05-21 03:27:48,681 - INFO - Found interesting endpoint: https://krisp.ai/wp-config.php [403]
+2025-05-21 03:27:48,704 - INFO - Found interesting endpoint: https://krisp.ai/.env [403]
+2025-05-21 03:27:48,716 - INFO - Found interesting endpoint: https://krisp.ai/.git/HEAD [403]
+2025-05-21 03:27:48,833 - INFO - Found interesting endpoint: https://krisp.ai/phpinfo.php [403]
+2025-05-21 03:27:48,934 - INFO - Found interesting endpoint: https://krisp.ai/.svn/entries [403]
+2025-05-21 03:27:48,943 - INFO - Found interesting endpoint: https://krisp.ai/.DS_Store [403]
+2025-05-21 03:27:49,079 - INFO - Completed vulnerability checks on https://krisp.ai, found 6 potentially interesting endpoints
+2025-05-21 03:27:49,080 - INFO - Adding endpoint https://krisp.ai/ (Interesting: False, Reason: Default interesting marking)
+2025-05-21 03:27:49,080 - INFO - Adding endpoint https://krisp.ai/backup (Interesting: True, Reason: Sensitive path component found: https://krisp.ai/backup)
+2025-05-21 03:27:49,080 - INFO - Adding endpoint https://krisp.ai/env (Interesting: False, Reason: Default interesting marking)
+2025-05-21 03:27:49,080 - INFO - Adding endpoint https://krisp.ai/.bash_history (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.bash_history)
+2025-05-21 03:27:49,080 - INFO - Adding endpoint https://krisp.ai/.bashrc (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.bashrc)
+2025-05-21 03:27:49,080 - INFO - Adding endpoint https://krisp.ai/.cvs (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.cvs)
+2025-05-21 03:27:49,080 - INFO - Adding endpoint https://krisp.ai/.forward (Interesting: False, Reason: Default interesting marking)
+2025-05-21 03:27:49,080 - INFO - Adding endpoint https://krisp.ai/.git/HEAD (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.git/HEAD)
+2025-05-21 03:27:49,080 - INFO - Adding endpoint https://krisp.ai/.git/HEADjs (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.git/HEADjs)
+2025-05-21 03:27:49,080 - INFO - Adding endpoint https://krisp.ai/.git/HEADphp (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.git/HEADphp)
+2025-05-21 03:27:49,080 - INFO - Adding endpoint https://krisp.ai/.git/HEADhtml (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.git/HEADhtml)
+2025-05-21 03:27:49,080 - INFO - Adding endpoint https://krisp.ai/.git/HEADtxt (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.git/HEADtxt)
+2025-05-21 03:27:49,080 - INFO - Adding endpoint https://krisp.ai/.git/HEADjson (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.git/HEADjson)
+2025-05-21 03:27:49,080 - INFO - Adding endpoint https://krisp.ai/.git/HEADxml (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.git/HEADxml)
+2025-05-21 03:27:49,080 - INFO - Adding endpoint https://krisp.ai/.git/HEADold (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.git/HEADold)
+2025-05-21 03:27:49,080 - INFO - Adding endpoint https://krisp.ai/.git/HEADbak (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.git/HEADbak)
+2025-05-21 03:27:49,080 - INFO - Adding endpoint https://krisp.ai/.git/HEADconfig (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.git/HEADconfig)
+2025-05-21 03:27:49,080 - INFO - Adding endpoint https://krisp.ai/.git/HEADbackup (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.git/HEADbackup)
+2025-05-21 03:27:49,080 - INFO - Adding endpoint https://krisp.ai/.git/HEADenv (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.git/HEADenv)
+2025-05-21 03:27:49,080 - INFO - Adding endpoint https://krisp.ai/.git/HEADsql (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.git/HEADsql)
+2025-05-21 03:27:49,080 - INFO - Adding endpoint https://krisp.ai/.history (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.history)
+2025-05-21 03:27:49,080 - INFO - Adding endpoint https://krisp.ai/.htahtml (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htahtml)
+2025-05-21 03:27:49,080 - INFO - Adding endpoint https://krisp.ai/.htajs (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htajs)
+2025-05-21 03:27:49,080 - INFO - Adding endpoint https://krisp.ai/.hta (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.hta)
+2025-05-21 03:27:49,080 - INFO - Adding endpoint https://krisp.ai/.htaphp (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htaphp)
+2025-05-21 03:27:49,080 - INFO - Adding endpoint https://krisp.ai/.htatxt (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htatxt)
+2025-05-21 03:27:49,081 - INFO - Adding endpoint https://krisp.ai/.htaconfig (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htaconfig)
+2025-05-21 03:27:49,081 - INFO - Adding endpoint https://krisp.ai/.htaxml (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htaxml)
+2025-05-21 03:27:49,081 - INFO - Adding endpoint https://krisp.ai/.htajson (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htajson)
+2025-05-21 03:27:49,081 - INFO - Adding endpoint https://krisp.ai/.htabak (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htabak)
+2025-05-21 03:27:49,081 - INFO - Adding endpoint https://krisp.ai/.htaold (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htaold)
+2025-05-21 03:27:49,081 - INFO - Adding endpoint https://krisp.ai/.htaccess (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htaccess)
+2025-05-21 03:27:49,081 - INFO - Adding endpoint https://krisp.ai/.htabackup (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htabackup)
+2025-05-21 03:27:49,081 - INFO - Adding endpoint https://krisp.ai/.htasql (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htasql)
+2025-05-21 03:27:49,081 - INFO - Adding endpoint https://krisp.ai/.htaenv (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htaenv)
+2025-05-21 03:27:49,081 - INFO - Adding endpoint https://krisp.ai/.htaccessphp (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htaccessphp)
+2025-05-21 03:27:49,081 - INFO - Adding endpoint https://krisp.ai/.htaccessjs (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htaccessjs)
+2025-05-21 03:27:49,081 - INFO - Adding endpoint https://krisp.ai/.htaccesstxt (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htaccesstxt)
+2025-05-21 03:27:49,081 - INFO - Adding endpoint https://krisp.ai/.htaccesshtml (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htaccesshtml)
+2025-05-21 03:27:49,081 - INFO - Adding endpoint https://krisp.ai/.htaccessjson (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htaccessjson)
+2025-05-21 03:27:49,081 - INFO - Adding endpoint https://krisp.ai/.htaccessxml (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htaccessxml)
+2025-05-21 03:27:49,081 - INFO - Adding endpoint https://krisp.ai/.htaccessconfig (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htaccessconfig)
+2025-05-21 03:27:49,081 - INFO - Adding endpoint https://krisp.ai/.htaccessbak (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htaccessbak)
+2025-05-21 03:27:49,081 - INFO - Adding endpoint https://krisp.ai/.htaccessbackup (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htaccessbackup)
+2025-05-21 03:27:49,081 - INFO - Adding endpoint https://krisp.ai/.htaccessold (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htaccessold)
+2025-05-21 03:27:49,081 - INFO - Adding endpoint https://krisp.ai/.htpasswd (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htpasswd)
+2025-05-21 03:27:49,081 - INFO - Adding endpoint https://krisp.ai/.htaccesssql (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htaccesssql)
+2025-05-21 03:27:49,081 - INFO - Adding endpoint https://krisp.ai/.htpasswdphp (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htpasswdphp)
+2025-05-21 03:27:49,081 - INFO - Adding endpoint https://krisp.ai/.htaccessenv (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htaccessenv)
+2025-05-21 03:27:49,081 - INFO - Adding endpoint https://krisp.ai/.htpasswdhtml (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htpasswdhtml)
+2025-05-21 03:27:49,081 - INFO - Adding endpoint https://krisp.ai/.htpasswdjs (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htpasswdjs)
+2025-05-21 03:27:49,081 - INFO - Adding endpoint https://krisp.ai/.htpasswdtxt (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htpasswdtxt)
+2025-05-21 03:27:49,081 - INFO - Adding endpoint https://krisp.ai/.htpasswdxml (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htpasswdxml)
+2025-05-21 03:27:49,081 - INFO - Adding endpoint https://krisp.ai/.htpasswdjson (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htpasswdjson)
+2025-05-21 03:27:49,081 - INFO - Adding endpoint https://krisp.ai/.htpasswdconfig (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htpasswdconfig)
+2025-05-21 03:27:49,081 - INFO - Adding endpoint https://krisp.ai/.htpasswdbak (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htpasswdbak)
+2025-05-21 03:27:49,081 - INFO - Adding endpoint https://krisp.ai/.htpasswdold (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htpasswdold)
+2025-05-21 03:27:49,082 - INFO - Adding endpoint https://krisp.ai/.htpasswdbackup (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htpasswdbackup)
+2025-05-21 03:27:49,082 - INFO - Adding endpoint https://krisp.ai/.htpasswdsql (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htpasswdsql)
+2025-05-21 03:27:49,082 - INFO - Adding endpoint https://krisp.ai/.htpasswdenv (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.htpasswdenv)
+2025-05-21 03:27:49,082 - INFO - Adding endpoint https://krisp.ai/.mysql_history (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.mysql_history)
+2025-05-21 03:27:49,082 - INFO - Adding endpoint https://krisp.ai/.passwd (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.passwd)
+2025-05-21 03:27:49,082 - INFO - Adding endpoint https://krisp.ai/.perf (Interesting: False, Reason: Default interesting marking)
+2025-05-21 03:27:49,082 - INFO - Adding endpoint https://krisp.ai/.profile (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.profile)
+2025-05-21 03:27:49,082 - INFO - Adding endpoint https://krisp.ai/.ssh (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.ssh)
+2025-05-21 03:27:49,082 - INFO - Adding endpoint https://krisp.ai/.svn (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.svn)
+2025-05-21 03:27:49,082 - INFO - Adding endpoint https://krisp.ai/.svn/entries (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.svn/entries)
+2025-05-21 03:27:49,082 - INFO - Adding endpoint https://krisp.ai/.svn/entriesphp (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.svn/entriesphp)
+2025-05-21 03:27:49,082 - INFO - Adding endpoint https://krisp.ai/.svn/entrieshtml (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.svn/entrieshtml)
+2025-05-21 03:27:49,082 - INFO - Adding endpoint https://krisp.ai/.svn/entriestxt (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.svn/entriestxt)
+2025-05-21 03:27:49,082 - INFO - Adding endpoint https://krisp.ai/.svn/entriesxml (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.svn/entriesxml)
+2025-05-21 03:27:49,082 - INFO - Adding endpoint https://krisp.ai/.svn/entriesjson (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.svn/entriesjson)
+2025-05-21 03:27:49,082 - INFO - Adding endpoint https://krisp.ai/.svn/entriesjs (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.svn/entriesjs)
+2025-05-21 03:27:49,082 - INFO - Adding endpoint https://krisp.ai/.svn/entriesconfig (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.svn/entriesconfig)
+2025-05-21 03:27:49,082 - INFO - Adding endpoint https://krisp.ai/.svn/entriesbak (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.svn/entriesbak)
+2025-05-21 03:27:49,082 - INFO - Adding endpoint https://krisp.ai/.svn/entriesold (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.svn/entriesold)
+2025-05-21 03:27:49,082 - INFO - Adding endpoint https://krisp.ai/.svn/entriesbackup (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.svn/entriesbackup)
+2025-05-21 03:27:49,082 - INFO - Adding endpoint https://krisp.ai/.svn/entriessql (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.svn/entriessql)
+2025-05-21 03:27:49,082 - INFO - Adding endpoint https://krisp.ai/.svn/entriesenv (Interesting: True, Reason: Protected resource (status 403): https://krisp.ai/.svn/entriesenv)
+2025-05-21 03:27:49,082 - INFO - Adding endpoint https://krisp.ai/.web (Interesting: False, Reason: Default interesting marking)
+2025-05-21 03:27:49,082 - INFO - Adding endpoint https://krisp.ai/@env (Interesting: False, Reason: Default interesting marking)
+2025-05-21 03:27:49,082 - INFO - Adding endpoint https://krisp.ai/@backup (Interesting: True, Reason: Sensitive path component found: https://krisp.ai/@backup)
+2025-05-21 03:27:49,082 - INFO - Adding endpoint https://krisp.ai/_vti_bin/_vti_adm/admin.dll (Interesting: True, Reason: Sensitive path component found: https://krisp.ai/_vti_bin/_vti_adm/admin.dll)
+2025-05-21 03:27:49,082 - INFO - Adding endpoint https://krisp.ai/_vti_bin/_vti_adm/admin.dllphp (Interesting: True, Reason: Sensitive path component found: https://krisp.ai/_vti_bin/_vti_adm/admin.dllphp)
+2025-05-21 03:27:49,082 - INFO - Adding endpoint https://krisp.ai/_vti_bin/_vti_adm/admin.dllhtml (Interesting: True, Reason: Sensitive path component found: https://krisp.ai/_vti_bin/_vti_adm/admin.dllhtml)
+2025-05-21 03:27:49,083 - INFO - Adding endpoint https://krisp.ai/_vti_bin/_vti_adm/admin.dlljs (Interesting: True, Reason: Sensitive path component found: https://krisp.ai/_vti_bin/_vti_adm/admin.dlljs)
+2025-05-21 03:27:49,083 - INFO - Adding endpoint https://krisp.ai/_vti_bin/_vti_adm/admin.dllxml (Interesting: True, Reason: Sensitive path component found: https://krisp.ai/_vti_bin/_vti_adm/admin.dllxml)
+2025-05-21 03:27:49,083 - INFO - Adding endpoint https://krisp.ai/_vti_bin/_vti_adm/admin.dlljson (Interesting: True, Reason: Sensitive path component found: https://krisp.ai/_vti_bin/_vti_adm/admin.dlljson)
+2025-05-21 03:27:49,083 - INFO - Adding endpoint https://krisp.ai/_vti_bin/_vti_adm/admin.dllbak (Interesting: True, Reason: Sensitive path component found: https://krisp.ai/_vti_bin/_vti_adm/admin.dllbak)
+2025-05-21 03:27:49,083 - INFO - Adding endpoint https://krisp.ai/_vti_bin/_vti_adm/admin.dlltxt (Interesting: True, Reason: Sensitive path component found: https://krisp.ai/_vti_bin/_vti_adm/admin.dlltxt)
+2025-05-21 03:27:49,083 - INFO - Adding endpoint https://krisp.ai/_vti_bin/_vti_adm/admin.dllbackup (Interesting: True, Reason: Sensitive path component found: https://krisp.ai/_vti_bin/_vti_adm/admin.dllbackup)
+2025-05-21 03:27:49,083 - INFO - Adding endpoint https://krisp.ai/_vti_bin/_vti_adm/admin.dllold (Interesting: True, Reason: Sensitive path component found: https://krisp.ai/_vti_bin/_vti_adm/admin.dllold)
+2025-05-21 03:27:49,083 - INFO - Adding endpoint https://krisp.ai/_vti_bin/_vti_adm/admin.dllsql (Interesting: True, Reason: Sensitive path component found: https://krisp.ai/_vti_bin/_vti_adm/admin.dllsql)
+2025-05-21 03:27:49,083 - INFO - Adding endpoint https://krisp.ai/_vti_bin/_vti_adm/admin.dllconfig (Interesting: True, Reason: Sensitive path component found: https://krisp.ai/_vti_bin/_vti_adm/admin.dllconfig)
+2025-05-21 03:27:49,083 - INFO - Adding endpoint https://krisp.ai/_vti_bin/_vti_adm/admin.dllenv (Interesting: True, Reason: Sensitive path component found: https://krisp.ai/_vti_bin/_vti_adm/admin.dllenv)
+2025-05-21 03:27:49,083 - INFO - Adding endpoint https://krisp.ai/_vti_bin/_vti_aut/author.dllhtml (Interesting: False, Reason: Default interesting marking)
+2025-05-21 03:27:49,083 - INFO - Adding endpoint https://krisp.ai/_vti_bin/_vti_aut/author.dll (Interesting: False, Reason: Default interesting marking)
+2025-05-21 03:27:49,083 - INFO - Adding endpoint https://krisp.ai/_vti_bin/_vti_aut/author.dllphp (Interesting: False, Reason: Default interesting marking)
+2025-05-21 03:27:49,083 - INFO - Adding endpoint https://krisp.ai/_vti_bin/_vti_aut/author.dlltxt (Interesting: False, Reason: Default interesting marking)
+2025-05-21 03:27:49,083 - INFO - Adding endpoint https://krisp.ai/_vti_bin/_vti_aut/author.dllxml (Interesting: False, Reason: Default interesting marking)
+2025-05-21 03:27:49,083 - INFO - Adding endpoint https://krisp.ai/_vti_bin/_vti_aut/author.dlljson (Interesting: False, Reason: Default interesting marking)
+2025-05-21 03:27:49,083 - INFO - Adding endpoint https://krisp.ai/_vti_bin/_vti_aut/author.dlljs (Interesting: False, Reason: Default interesting marking)
+2025-05-21 03:27:49,083 - INFO - Adding endpoint https://krisp.ai/_vti_bin/_vti_aut/author.dllconfig (Interesting: True, Reason: Sensitive path component found: https://krisp.ai/_vti_bin/_vti_aut/author.dllconfig)
+2025-05-21 03:27:49,083 - INFO - Adding endpoint https://krisp.ai/_vti_bin/_vti_aut/author.dllbak (Interesting: False, Reason: Default interesting marking)
+2025-05-21 03:27:49,083 - INFO - Adding endpoint https://krisp.ai/_vti_bin/_vti_aut/author.dllold (Interesting: False, Reason: Default interesting marking)
+2025-05-21 03:27:49,083 - INFO - Adding endpoint https://krisp.ai/_vti_bin/_vti_aut/author.dllbackup (Interesting: True, Reason: Sensitive path component found: https://krisp.ai/_vti_bin/_vti_aut/author.dllbackup)
+2025-05-21 03:27:49,083 - INFO - Adding endpoint https://krisp.ai/_vti_bin/_vti_aut/author.dllsql (Interesting: False, Reason: Default interesting marking)
+2025-05-21 03:27:49,083 - INFO - Adding endpoint https://krisp.ai/_vti_bin/_vti_aut/author.dllenv (Interesting: False, Reason: Default interesting marking)
+2025-05-21 03:27:49,083 - INFO - Parsed 108 endpoints from ffuf results
+2025-05-21 03:27:49,084 - INFO - Completed discovery on https://krisp.ai in 301.99 seconds
+2025-05-21 03:27:49,084 - INFO - Processed https://krisp.ai for krisp.ai: found 114 endpoints
+2025-05-21 03:27:49,085 - INFO - Starting batch AI classification for 114 endpoints
+2025-05-21 03:27:49,085 - INFO - Processing batch 1/2 (100 endpoints)
+2025-05-21 03:28:16,626 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:28:18,629 - INFO - Processing batch 2/2 (14 endpoints)
+2025-05-21 03:28:23,257 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:28:23,263 - INFO - Completed AI classification for 114 endpoints
+2025-05-21 03:28:23,280 - INFO - Saved 87 new endpoints and updated 27 existing endpoints in database
+2025-05-21 03:28:23,282 - INFO - Content discovery complete for krisp.ai in 336.19 seconds
+2025-05-21 03:28:23,282 - INFO - Found 114 total endpoints, 97 marked as interesting
+2025-05-21 03:36:25,680 - INFO - Loaded 25 URLs for fuzzing
+2025-05-21 03:36:40,903 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:36:40,906 - INFO - Generated 15 payloads for https://krisp.ai/_vti_bin/_vti_adm/admin.dllphp
+2025-05-21 03:36:40,907 - INFO - Fuzzing complete
+2025-05-21 03:39:56,948 - INFO - Loaded 95 URLs for fuzzing
+2025-05-21 03:40:06,795 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:40:06,798 - INFO - Generated 10 payloads for https://krisp.ai/.svn/entries
+2025-05-21 03:40:21,739 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:40:21,772 - INFO - Generated 13 payloads for https://krisp.ai/.htaccesshtml
+2025-05-21 03:40:34,132 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:40:34,134 - INFO - Generated 10 payloads for https://krisp.ai/.htpasswdxml
+2025-05-21 03:40:47,470 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:40:47,474 - INFO - Generated 15 payloads for https://krisp.ai/.git/HEADenv
+2025-05-21 03:41:07,550 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:41:07,555 - INFO - Generated 10 payloads for https://krisp.ai/.htaccessbak
+2025-05-21 03:41:23,700 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:41:23,704 - INFO - Generated 15 payloads for https://krisp.ai/.git/HEADhtml
+2025-05-21 03:41:36,554 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:41:36,556 - INFO - Generated 12 payloads for https://krisp.ai/.svn/entriestxt
+2025-05-21 03:41:49,130 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:41:49,139 - INFO - Generated 10 payloads for https://krisp.ai/.htaccessconfig
+2025-05-21 03:42:01,162 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:42:01,168 - INFO - Generated 11 payloads for https://krisp.ai/_vti_bin/_vti_adm/admin.dllconfig
+2025-05-21 03:42:15,038 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:42:15,042 - INFO - Generated 9 payloads for https://krisp.ai/.htabak
+2025-05-21 03:42:24,596 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:42:24,600 - INFO - Generated 10 payloads for https://krisp.ai/.git/HEAD
+2025-05-21 03:42:34,280 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:42:34,287 - INFO - Generated 10 payloads for https://krisp.ai/.htpasswdtxt
+2025-05-21 03:42:51,145 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:42:51,151 - INFO - Generated 10 payloads for https://krisp.ai/.htahtml
+2025-05-21 03:43:06,098 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:43:06,102 - INFO - Generated 12 payloads for https://krisp.ai/.git/HEADconfig
+2025-05-21 03:43:19,557 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:43:19,563 - INFO - Generated 11 payloads for https://krisp.ai/.svn/entriesbak
+2025-05-21 03:43:33,677 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:43:33,688 - INFO - Generated 10 payloads for https://krisp.ai/_vti_bin/_vti_adm/admin.dlljson
+2025-05-21 03:44:05,383 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:44:05,416 - INFO - Generated 15 payloads for https://krisp.ai/.bashrc
+2025-05-21 03:44:19,952 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:44:19,961 - INFO - Generated 10 payloads for https://krisp.ai/.svn/entriesbackup
+2025-05-21 03:44:27,385 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:44:27,389 - INFO - Generated 10 payloads for https://krisp.ai/.git/HEADjs
+2025-05-21 03:44:36,881 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:44:36,887 - INFO - Generated 10 payloads for https://krisp.ai/.svn/entriesjs
+2025-05-21 03:44:46,001 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:44:46,003 - INFO - Generated 9 payloads for https://krisp.ai/.svn/entriesold
+2025-05-21 03:44:58,268 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:44:58,275 - INFO - Generated 10 payloads for https://krisp.ai/.passwd
+2025-05-21 03:45:10,096 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:45:10,099 - INFO - Generated 10 payloads for https://krisp.ai/.htpasswdjson
+2025-05-21 03:45:28,559 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:45:28,569 - INFO - Generated 15 payloads for https://krisp.ai/.env
+2025-05-21 03:45:43,781 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:45:43,789 - INFO - Generated 10 payloads for https://krisp.ai/.svn/entriesconfig
+2025-05-21 03:45:57,263 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:45:57,269 - INFO - Generated 11 payloads for https://krisp.ai/.history
+2025-05-21 03:46:17,068 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:46:17,073 - INFO - Generated 13 payloads for https://krisp.ai/_vti_bin/_vti_adm/admin.dlljs
+2025-05-21 03:46:29,804 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:46:29,807 - INFO - Generated 10 payloads for https://krisp.ai/_vti_bin/_vti_adm/admin.dllold
+2025-05-21 03:46:46,160 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:46:46,204 - INFO - Generated 10 payloads for https://krisp.ai/.htaccessold
+2025-05-21 03:46:56,140 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:46:56,143 - INFO - Generated 10 payloads for https://krisp.ai/.htaccess
+2025-05-21 03:47:05,416 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:47:05,446 - INFO - Generated 10 payloads for https://krisp.ai/_vti_bin/_vti_adm/admin.dllenv
+2025-05-21 03:47:15,823 - ERROR - Error fuzzing https://krisp.ai/_vti_bin/_vti_adm/admin.dllenv with payload /_vti_bin/_vti_adm/admin.dllenv?admin=true: HTTPSConnectionPool(host='krisp.ai', port=443): Read timed out. (read timeout=10)
+2025-05-21 03:47:15,824 - ERROR - Error fuzzing https://krisp.ai/_vti_bin/_vti_adm/admin.dllenv with payload /_vti_bin/_vti_adm/admin.dllenv;jsessionid=123456: HTTPSConnectionPool(host='krisp.ai', port=443): Read timed out. (read timeout=10)
+2025-05-21 03:47:15,842 - ERROR - Error fuzzing https://krisp.ai/_vti_bin/_vti_adm/admin.dllenv with payload /_vti_bin/_vti_adm/admin.dllenv/../../../../admin: HTTPSConnectionPool(host='krisp.ai', port=443): Read timed out. (read timeout=10)
+2025-05-21 03:47:15,843 - ERROR - Error fuzzing https://krisp.ai/_vti_bin/_vti_adm/admin.dllenv with payload /_vti_bin/_vti_adm/admin.dllenv: HTTPSConnectionPool(host='krisp.ai', port=443): Read timed out. (read timeout=10)
+2025-05-21 03:47:15,844 - ERROR - Error fuzzing https://krisp.ai/_vti_bin/_vti_adm/admin.dllenv with payload /_vti_bin/_vti_adm/admin.dllenv?%00: HTTPSConnectionPool(host='krisp.ai', port=443): Read timed out. (read timeout=10)
+2025-05-21 03:47:44,767 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:47:44,812 - INFO - Generated 13 payloads for https://krisp.ai/.hta
+2025-05-21 03:47:56,107 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:47:56,118 - INFO - Generated 10 payloads for https://krisp.ai/.htaccesstxt
+2025-05-21 03:48:07,755 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:48:07,762 - INFO - Generated 10 payloads for https://krisp.ai/.htaccessenv
+2025-05-21 03:48:17,877 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:48:17,891 - INFO - Generated 10 payloads for https://krisp.ai/.git/HEADold
+2025-05-21 03:48:28,143 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:48:28,152 - INFO - Generated 10 payloads for https://krisp.ai/.svn/entriesenv
+2025-05-21 03:48:39,763 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:48:39,768 - INFO - Generated 12 payloads for https://krisp.ai/.htpasswdhtml
+2025-05-21 03:48:53,337 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:48:53,341 - INFO - Generated 15 payloads for https://krisp.ai/.svn/entriessql
+2025-05-21 03:49:07,120 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:49:07,127 - INFO - Generated 15 payloads for https://krisp.ai/@backup
+2025-05-21 03:49:18,582 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:49:18,603 - INFO - Generated 9 payloads for https://krisp.ai/_vti_bin/_vti_adm/admin.dll
+2025-05-21 03:49:34,223 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:49:34,265 - INFO - Generated 10 payloads for https://krisp.ai/.profile
+2025-05-21 03:49:46,691 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:49:46,694 - INFO - Generated 12 payloads for https://krisp.ai/.htaold
+2025-05-21 03:49:59,483 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:49:59,494 - INFO - Generated 10 payloads for https://krisp.ai/.htasql
+2025-05-21 03:50:10,677 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:50:10,682 - INFO - Generated 10 payloads for https://krisp.ai/.htpasswdsql
+2025-05-21 03:50:24,674 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:50:24,676 - INFO - Generated 10 payloads for https://krisp.ai/_vti_bin/_vti_adm/admin.dllphp
+2025-05-21 03:50:43,758 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:50:43,775 - INFO - Generated 10 payloads for https://krisp.ai/.svn/entriesxml
+2025-05-21 03:50:53,154 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:50:53,156 - INFO - Generated 10 payloads for https://krisp.ai/.cvs
+2025-05-21 03:51:03,827 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:51:03,836 - INFO - Generated 10 payloads for https://krisp.ai/.htaccessjson
+2025-05-21 03:51:18,672 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:51:18,702 - INFO - Generated 15 payloads for https://krisp.ai/.htaccessjs
+2025-05-21 03:51:28,438 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:51:28,447 - INFO - Generated 10 payloads for https://krisp.ai/_vti_bin/_vti_aut/author.dllconfig
+2025-05-21 03:51:43,012 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:51:43,025 - INFO - Generated 13 payloads for https://krisp.ai/backup
+2025-05-21 03:51:54,972 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:51:54,977 - INFO - Generated 10 payloads for https://krisp.ai/.htajson
+2025-05-21 03:52:06,814 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:52:06,848 - INFO - Generated 12 payloads for https://krisp.ai/.htpasswd
+2025-05-21 03:52:15,192 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:52:15,199 - INFO - Generated 10 payloads for https://krisp.ai/_vti_bin/_vti_adm/admin.dllsql
+2025-05-21 03:52:29,435 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:52:29,446 - INFO - Generated 10 payloads for https://krisp.ai/.htpasswdconfig
+2025-05-21 03:52:43,221 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:52:43,226 - INFO - Generated 13 payloads for https://krisp.ai/.git/HEADbackup
+2025-05-21 03:52:53,407 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:52:53,410 - INFO - Generated 10 payloads for https://krisp.ai/.htaccesssql
+2025-05-21 03:53:04,681 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:53:04,687 - INFO - Generated 10 payloads for https://krisp.ai/.htaenv
+2025-05-21 03:53:13,890 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:53:13,897 - INFO - Generated 10 payloads for https://krisp.ai/.git/HEADxml
+2025-05-21 03:53:24,415 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:53:24,431 - INFO - Generated 10 payloads for https://krisp.ai/wp-config.php
+2025-05-21 03:53:36,067 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:53:36,097 - INFO - Generated 10 payloads for https://krisp.ai/.htaxml
+2025-05-21 03:53:45,097 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:53:45,107 - INFO - Generated 10 payloads for https://krisp.ai/.git/HEADsql
+2025-05-21 03:53:59,074 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:53:59,082 - INFO - Generated 14 payloads for https://krisp.ai/.git/HEADphp
+2025-05-21 03:54:09,316 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:54:09,326 - INFO - Generated 10 payloads for https://krisp.ai/.svn/entrieshtml
+2025-05-21 03:54:26,503 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:54:26,511 - INFO - Generated 15 payloads for https://krisp.ai/.htpasswdenv
+2025-05-21 03:54:36,600 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:54:36,603 - INFO - Generated 10 payloads for https://krisp.ai/.mysql_history
+2025-05-21 03:54:47,819 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:54:47,827 - INFO - Generated 10 payloads for https://krisp.ai/.svn/entriesphp
+2025-05-21 03:55:00,273 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:55:00,276 - INFO - Generated 15 payloads for https://krisp.ai/.ssh
+2025-05-21 03:55:15,620 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:55:15,649 - INFO - Generated 10 payloads for https://krisp.ai/.git/HEADjson
+2025-05-21 03:55:26,911 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:55:26,918 - INFO - Generated 10 payloads for https://krisp.ai/.htaccessbackup
+2025-05-21 03:55:37,323 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:55:37,332 - INFO - Generated 10 payloads for https://krisp.ai/_vti_bin/_vti_adm/admin.dlltxt
+2025-05-21 03:55:54,840 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:55:54,842 - INFO - Generated 15 payloads for https://krisp.ai/.htpasswdbackup
+2025-05-21 03:56:08,087 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:56:08,092 - INFO - Generated 10 payloads for https://krisp.ai/.htajs
+2025-05-21 03:56:21,984 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:56:21,988 - INFO - Generated 15 payloads for https://krisp.ai/.htpasswdjs
+2025-05-21 03:56:35,190 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:56:35,196 - INFO - Generated 10 payloads for https://krisp.ai/.svn/entriesjson
+2025-05-21 03:56:48,170 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:56:48,182 - INFO - Generated 10 payloads for https://krisp.ai/_vti_bin/_vti_adm/admin.dllhtml
+2025-05-21 03:57:02,869 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:57:02,872 - INFO - Generated 10 payloads for https://krisp.ai/.htpasswdphp
+2025-05-21 03:57:13,130 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:57:13,132 - INFO - Generated 10 payloads for https://krisp.ai/.htaccessphp
+2025-05-21 03:57:24,379 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:57:24,388 - INFO - Generated 10 payloads for https://krisp.ai/phpinfo.php
+2025-05-21 03:57:34,088 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:57:34,096 - INFO - Generated 10 payloads for https://krisp.ai/.htpasswdold
+2025-05-21 03:57:45,172 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:57:45,179 - INFO - Generated 10 payloads for https://krisp.ai/.htabackup
+2025-05-21 03:57:55,079 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:57:55,084 - INFO - Generated 10 payloads for https://krisp.ai/_vti_bin/_vti_adm/admin.dllbak
+2025-05-21 03:58:09,636 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:58:09,646 - INFO - Generated 10 payloads for https://krisp.ai/.htpasswdbak
+2025-05-21 03:58:20,162 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:58:20,164 - INFO - Generated 10 payloads for https://krisp.ai/_vti_bin/_vti_adm/admin.dllxml
+2025-05-21 03:58:40,815 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:58:40,860 - INFO - Generated 10 payloads for https://krisp.ai/.htaccessxml
+2025-05-21 03:58:52,139 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:58:52,173 - INFO - Generated 10 payloads for https://krisp.ai/_vti_bin/_vti_adm/admin.dllbackup
+2025-05-21 03:59:07,753 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:59:07,761 - INFO - Generated 10 payloads for https://krisp.ai/.htatxt
+2025-05-21 03:59:22,609 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:59:22,646 - INFO - Generated 15 payloads for https://krisp.ai/.bash_history
+2025-05-21 03:59:35,287 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:59:35,294 - INFO - Generated 11 payloads for https://krisp.ai/.htaconfig
+2025-05-21 03:59:46,333 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 03:59:46,337 - INFO - Generated 10 payloads for https://krisp.ai/_vti_bin/_vti_aut/author.dllbackup
+2025-05-21 04:00:01,046 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 04:00:01,053 - INFO - Generated 13 payloads for https://krisp.ai/.git/HEADtxt
+2025-05-21 04:00:13,633 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 04:00:13,642 - INFO - Generated 11 payloads for https://krisp.ai/.DS_Store
+2025-05-21 04:00:28,716 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 04:00:28,721 - INFO - Generated 11 payloads for https://krisp.ai/.svn
+2025-05-21 04:00:37,882 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 04:00:37,919 - INFO - Generated 10 payloads for https://krisp.ai/.htaphp
+2025-05-21 04:00:54,408 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 04:00:54,411 - INFO - Generated 15 payloads for https://krisp.ai/.git/HEADbak
+2025-05-21 04:00:55,467 - INFO - Fuzzing complete
+2025-05-21 04:45:47,428 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 04:50:07,546 - INFO - Endpoints table set up successfully
+2025-05-21 04:50:07,547 - INFO - Marked 0 endpoints as interesting for pattern 'api'
+2025-05-21 04:50:32,130 - INFO - Endpoints table set up successfully
+2025-05-21 04:50:32,130 - INFO - Marked 0 endpoints as interesting for pattern 'auth|login|oauth'
+2025-05-21 04:53:29,512 - INFO - No steps to execute for None
+2025-05-21 04:58:26,493 - INFO - Starting autonomous cycle
+2025-05-21 04:58:26,493 - INFO - Processing target: jira.atlassian.com
+2025-05-21 04:58:41,840 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 04:58:41,860 - INFO - No steps to execute for None
+2025-05-21 04:58:54,080 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 04:58:54,128 - INFO - Generated analysis for jira.atlassian.com, saved to workspace/jira.atlassian.com/agent_analysis.json
+2025-05-21 04:58:54,129 - INFO - Generated progress report: workspace/jira.atlassian.com/agent_progress_report.json
+2025-05-21 04:58:54,131 - INFO - Generated progress report: agent_progress_report.json
+2025-05-21 04:58:54,131 - INFO - Autonomous cycle completed

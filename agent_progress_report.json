@@ -1,11 +1,11 @@
 {
-  "targets": 0,
-  "findings": 0,
-  "chains": 0,
-  "endpoints": 18,
-  "runs": 0,
-  "successful_runs": 0,
-  "success_rate": 0,
+  "targets": 1,
+  "findings": 3,
+  "chains": 1,
+  "endpoints": 162,
+  "runs": 9,
+  "successful_runs": 9,
+  "success_rate": 100.0,
   "recent_learnings": [],
-  "generated_at": "2025-05-20T11:13:10.444643"
+  "generated_at": "2025-05-21T04:58:54.130590"
 }
