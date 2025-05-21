@@ -1,0 +1,14 @@
+{
+    "model_configs": {
+        "gpt-4o": {
+            "model": "gpt-4o",
+            "api_key": "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"
+        },
+        "gpt-3.5-turbo": {
+            "model": "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",
+            "api_key": "your-openai-api-key"
+        }
+    },
+    "default_model": "gpt-3.5-turbo",
+    "enhanced_model": "gpt-4o"
+}
