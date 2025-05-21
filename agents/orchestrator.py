@@ -149,81 +149,188 @@ class OrchestratorAgent:
         return [{"target": t["target"], "reason": "Automated prioritization"} for t in sorted_targets[:max_targets]]
     
     def create_plan_for_target(self, target):
-        """Create an execution plan for a target."""
-        # Get target metrics
-        metrics = self.get_target_metrics(target)
-        
-        # Determine which steps have already been completed
-        steps_completed = {
-            "discovery": metrics["endpoints_count"] > 0,
-            "content_discovery": metrics["endpoints_count"] > 100,  # Arbitrary threshold
-            "triage": metrics["findings_count"] > 0,
-            "attack_planning": False,  # Need to check if attack plan exists
-            "verification": False,  # Need to check if verifications exist
-            "chain_detection": metrics["chains_count"] > 0,
-            "reporting": False  # Need to check if reports exist
-        }
-        
-        # Check if attack plan exists
-        plan_file = os.path.join("workspace", target, "attack_plan.json")
-        steps_completed["attack_planning"] = os.path.exists(plan_file)
-        
-        # Check if reports exist
-        reports_dir = os.path.join("workspace", target, "reports")
-        steps_completed["reporting"] = os.path.exists(reports_dir) and any(os.listdir(reports_dir)) if os.path.exists(reports_dir) else False
-        
-        # Create a plan with steps based on what's missing
-        plan = {
-            "target": target,
-            "created_at": datetime.now().isoformat(),
-            "steps": []
-        }
-        
-        # Add steps based on what's missing
-        if not steps_completed["discovery"]:
-            plan["steps"].append({
-                "id": len(plan["steps"]) + 1,
-                "name": "content_discovery",
-                "description": "Discover endpoints and content",
-                "agent": "DiscoveryAgent",
-                "status": "pending",
-                "priority": 1
-            })
-        
-        if not steps_completed["triage"] and steps_completed["discovery"]:
-            plan["steps"].append({
-                "id": len(plan["steps"]) + 1,
-                "name": "vulnerability_testing",
-                "description": "Test endpoints for vulnerabilities",
-                "agent": "FuzzerAgent",
-                "status": "pending",
-                "priority": 2
-            })
-        
-        if not steps_completed["chain_detection"] and steps_completed["triage"]:
-            plan["steps"].append({
-                "id": len(plan["steps"]) + 1,
-                "name": "vulnerability_chaining",
-                "description": "Analyze vulnerabilities for attack chains",
-                "agent": "AnalysisAgent",
-                "status": "pending", 
-                "priority": 3
-            })
-        
-        if not steps_completed["reporting"] and (steps_completed["verification"] or steps_completed["chain_detection"]):
-            plan["steps"].append({
-                "id": len(plan["steps"]) + 1,
-                "name": "report_generation",
-                "description": "Generate report of findings",
-                "agent": "ReportingAgent",
-                "status": "pending",
-                "priority": 4
-            })
-        
-        # Save plan to database
-        self.save_plan_to_db(target, plan)
-        
-        return plan
+		"""Create an execution plan for a target."""
+		# Get target metrics
+		metrics = self.get_target_metrics(target)
+		
+		# Determine which steps have already been completed
+		steps_completed = {
+		    "discovery": metrics["endpoints_count"] > 0,
+		    "content_discovery": metrics["endpoints_count"] > 100,  # Arbitrary threshold
+		    "triage": metrics["findings_count"] > 0,
+		    "attack_planning": False,  # Need to check if attack plan exists
+		    "verification": False,  # Need to check if verifications exist
+		    "chain_detection": metrics["chains_count"] > 0,
+		    "reporting": False  # Need to check if reports exist
+		}
+		
+		# Check if attack plan exists
+		plan_file = os.path.join("workspace", target, "attack_plan.json")
+		steps_completed["attack_planning"] = os.path.exists(plan_file)
+		
+		# Check if reports exist
+		reports_dir = os.path.join("workspace", target, "reports")
+		steps_completed["reporting"] = os.path.exists(reports_dir) and any(os.listdir(reports_dir)) if os.path.exists(reports_dir) else False
+		
+		# Create a plan with steps based on what's missing
+		plan = {
+		    "target": target,
+		    "created_at": datetime.now().isoformat(),
+		    "steps": []
+		}
+		
+		# Add steps based on what's missing
+		if not steps_completed["discovery"]:
+		    plan["steps"].append({
+		        "id": len(plan["steps"]) + 1,
+		        "name": "content_discovery",
+		        "description": "Discover endpoints and content",
+		        "agent": "DiscoveryAgent",
+		        "status": "pending",
+		        "priority": 1
+		    })
+		
+		if not steps_completed["triage"] and steps_completed["discovery"]:
+		    plan["steps"].append({
+		        "id": len(plan["steps"]) + 1,
+		        "name": "vulnerability_testing",
+		        "description": "Test endpoints for vulnerabilities",
+		        "agent": "FuzzerAgent",
+		        "status": "pending",
+		        "priority": 2
+		    })
+		
+		if not steps_completed["chain_detection"] and steps_completed["triage"]:
+		    plan["steps"].append({
+		        "id": len(plan["steps"]) + 1,
+		        "name": "vulnerability_chaining",
+		        "description": "Analyze vulnerabilities for attack chains",
+		        "agent": "AnalysisAgent",
+		        "status": "pending", 
+		        "priority": 3
+		    })
+		
+		if not steps_completed["reporting"] and (steps_completed["verification"] or steps_completed["chain_detection"]):
+		    plan["steps"].append({
+		        "id": len(plan["steps"]) + 1,
+		        "name": "report_generation",
+		        "description": "Generate report of findings",
+		        "agent": "ReportingAgent",
+		        "status": "pending",
+		        "priority": 4
+		    })
+		
+		# Save plan to database
+		self.save_plan_to_db(target, plan)
+		
+		return plan
+
+	def get_target_metrics(self, target):
+		"""Get metrics for a target to assess its potential."""
+		conn = sqlite3.connect(self.db_path)
+		c = conn.cursor()
+		
+		# Normalize target name (handle subdomains properly)
+		target_patterns = [target]
+		if '.' in target:
+		    # Add both with and without www prefix
+		    if target.startswith('www.'):
+		        target_patterns.append(target[4:])
+		    else:
+		        target_patterns.append('www.' + target)
+		
+		# Create SQL pattern for LIKE queries
+		sql_patterns = ' OR '.join(['target LIKE ?' for _ in target_patterns])
+		sql_values = ['%' + pattern + '%' for pattern in target_patterns]
+		
+		# Get count of findings
+		query = f"SELECT COUNT(*) FROM findings WHERE {sql_patterns}"
+		c.execute(query, sql_values)
+		findings_count = c.fetchone()[0] or 0
+		
+		# Get count of endpoints
+		try:
+		    query = f"SELECT COUNT(*) FROM endpoints WHERE {sql_patterns}"
+		    c.execute(query, sql_values)
+		    endpoints_count = c.fetchone()[0] or 0
+		    
+		    # Get count of interesting endpoints
+		    query = f"SELECT COUNT(*) FROM endpoints WHERE ({sql_patterns}) AND interesting = 1"
+		    c.execute(query, sql_values)
+		    interesting_endpoints_count = c.fetchone()[0] or 0
+		except sqlite3.OperationalError:
+		    # Endpoints table might not exist yet
+		    endpoints_count = 0
+		    interesting_endpoints_count = 0
+		
+		# Get count of chains
+		try:
+		    query = f"SELECT COUNT(*) FROM chains WHERE {sql_patterns}"
+		    c.execute(query, sql_values)
+		    chains_count = c.fetchone()[0] or 0
+		except sqlite3.OperationalError:
+		    # Chains table might not exist yet
+		    chains_count = 0
+		
+		conn.close()
+		
+		return {
+		    "target": target,
+		    "findings_count": findings_count,
+		    "endpoints_count": endpoints_count,
+		    "interesting_endpoints_count": interesting_endpoints_count,
+		    "chains_count": chains_count,
+		    "last_activity": self.get_last_activity(target)
+		}
+
+	def update_plan_status(self, target, step_name, success):
+		"""Update the plan status for a target."""
+		conn = sqlite3.connect(self.db_path)
+		c = conn.cursor()
+		
+		try:
+		    # Get latest plan for target
+		    c.execute("""
+		        SELECT id, plan FROM agent_plans 
+		        WHERE target = ? 
+		        ORDER BY created_at DESC LIMIT 1
+		    """, (target,))
+		    result = c.fetchone()
+		    
+		    if result:
+		        plan_id, plan_json = result
+		        plan = json.loads(plan_json)
+		        
+		        # Update step status - check both name and module fields
+		        for step in plan.get("steps", []):
+		            if step.get("name") == step_name or step.get("module") == step_name:
+		                step["status"] = "completed" if success else "failed"
+		                step["completed_at"] = datetime.now().isoformat()
+		        
+		        # Update overall plan status
+		        all_completed = all(step.get("status") == "completed" for step in plan.get("steps", []))
+		        any_failed = any(step.get("status") == "failed" for step in plan.get("steps", []))
+		        
+		        status = "completed" if all_completed else "failed" if any_failed else "in_progress"
+		        
+		        # Save updated plan
+		        c.execute("""
+		            UPDATE agent_plans 
+		            SET plan = ?, status = ?, updated_at = ?
+		            WHERE id = ?
+		        """, (
+		            json.dumps(plan),
+		            status,
+		            datetime.now().isoformat(),
+		            plan_id
+		        ))
+		        conn.commit()
+		    else:
+		        self.logger.warning(f"No plan found for {target} when updating status")
+		except Exception as e:
+		    self.logger.error(f"Error updating plan status: {e}")
+		finally:
+		    conn.close()
     
     def save_plan_to_db(self, target, plan):
         """Save a plan to the database."""

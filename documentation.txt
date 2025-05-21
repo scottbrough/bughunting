@@ -86,6 +86,7 @@ Phase 1: Enhanced Scanning
 Improve wordlists for discovery
 Add more fuzzing techniques
 Integrate passive reconnaissance tools
+Integrate collaborative group chat among agents
 
 Phase 2: Automated Submission
 

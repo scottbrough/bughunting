@@ -214,6 +214,7 @@ def prioritize_targets(targets, max_targets=3):
         )
         return [{"target": t["target"], "reason": "Fallback prioritization"} for t in sorted_targets[:max_targets]]
 
+
 def create_target_plan(target):
     """Create an execution plan for a target."""
     # Get target metrics
@@ -271,8 +272,65 @@ def create_target_plan(target):
         
         plan = json.loads(response.choices[0].message.content)
         
+        # Ensure target field is correct
+        if "target" not in plan or plan["target"] != target:
+            logger.warning(f"Plan missing target or incorrect target. Setting target to {target}")
+            plan["target"] = target
+        
+        # Ensure steps field exists
+        if "steps" not in plan or not isinstance(plan["steps"], list):
+            logger.warning(f"Plan missing steps or steps is not a list. Creating default steps for {target}")
+            plan["steps"] = [
+                {
+                    "id": 1,
+                    "name": "content_discovery",
+                    "description": "Discover endpoints and content",
+                    "module": "discover",
+                    "command": f"python3 content_discovery.py {target}",
+                    "agent": "DiscoveryAgent",
+                    "priority": 1, 
+                    "status": "pending"
+                },
+                {
+                    "id": 2,
+                    "name": "vulnerability_testing",
+                    "description": "Test endpoints for vulnerabilities",
+                    "module": "fuzzer",
+                    "command": f"python3 fuzzer.py {target}",
+                    "agent": "FuzzerAgent",
+                    "priority": 2,
+                    "status": "pending"
+                },
+                {
+                    "id": 3,
+                    "name": "reporting",
+                    "description": "Generate report of findings", 
+                    "module": "report_engine",
+                    "command": f"python3 report_engine.py {target}",
+                    "agent": "ReportingAgent",
+                    "priority": 3,
+                    "status": "pending"
+                }
+            ]
+        
         # Save plan to database
-        save_plan_to_db(target, plan)
+        conn = sqlite3.connect(DB_PATH)
+        c = conn.cursor()
+        c.execute("""
+            INSERT INTO agent_plans (target, plan, status, created_at, updated_at)
+            VALUES (?, ?, ?, ?, ?)
+        """, (
+            target,
+            json.dumps(plan),
+            "created",
+            datetime.now().isoformat(),
+            datetime.now().isoformat()
+        ))
+        conn.commit()
+        conn.close()
+        
+        logger.info(f"Plan saved to database for {target}")
+        logger.info(f"Created plan for {target} with {len(plan.get('steps', []))} steps")
         
         return plan
         
@@ -282,64 +340,119 @@ def create_target_plan(target):
         # Fallback to basic plan
         basic_plan = {
             "target": target,
-            "created_at": datetime.now().isoformat(),
             "steps": []
         }
         
         # Add steps based on what's missing
         if not steps_completed["discovery"]:
             basic_plan["steps"].append({
-                "id": len(basic_plan["steps"]) + 1,
-                "name": "discover",
+                "id": 1,
+                "name": "content_discovery",
+                "description": "Discover endpoints and content",
                 "module": "discover",
                 "command": f"python3 content_discovery.py {target}",
-                "description": "Discover endpoints and content",
                 "agent": "DiscoveryAgent",
-                "status": "pending",
-                "priority": 1
+                "priority": 1,
+                "status": "pending"
             })
         
         if not steps_completed["triage"] and steps_completed["discovery"]:
             basic_plan["steps"].append({
                 "id": len(basic_plan["steps"]) + 1,
                 "name": "vulnerability_testing",
-                "module": "vulnerability_testing",
-                "command": f"python3 fuzzer.py {target}",
                 "description": "Test endpoints for vulnerabilities",
+                "module": "fuzzer",
+                "command": f"python3 fuzzer.py {target}",
                 "agent": "FuzzerAgent",
-                "status": "pending",
-                "priority": 2
+                "priority": 2,
+                "status": "pending"
             })
-        
+            
+        if not steps_completed["attack_planning"] and steps_completed["triage"]:
+            basic_plan["steps"].append({
+                "id": len(basic_plan["steps"]) + 1,
+                "name": "attack_planning",
+                "description": "Plan attacks based on findings",
+                "module": "attack_coordinator",
+                "command": f"python3 attack_coordinator.py {target}",
+                "agent": "AttackPlannerAgent",
+                "priority": 3,
+                "status": "pending"
+            })
+            
+        if not steps_completed["verification"] and steps_completed["attack_planning"]:
+            basic_plan["steps"].append({
+                "id": len(basic_plan["steps"]) + 1,
+                "name": "vulnerability_verification",
+                "description": "Verify vulnerabilities",
+                "module": "verify",
+                "command": f"python3 verify.py {target}",
+                "agent": "VerificationAgent",
+                "priority": 4,
+                "status": "pending"
+            })
+            
         if not steps_completed["chain_detection"] and steps_completed["triage"]:
             basic_plan["steps"].append({
                 "id": len(basic_plan["steps"]) + 1,
                 "name": "vulnerability_chaining",
-                "module": "vulnerability_chaining",
+                "description": "Detect vulnerability chains",
+                "module": "chain_detector",
                 "command": f"python3 chain_detector.py {target}",
-                "description": "Analyze vulnerabilities for attack chains",
-                "agent": "AnalysisAgent",
-                "status": "pending", 
-                "priority": 3
+                "agent": "ChainDetectorAgent",
+                "priority": 5,
+                "status": "pending"
             })
-        
+            
         if not steps_completed["reporting"] and (steps_completed["verification"] or steps_completed["chain_detection"]):
             basic_plan["steps"].append({
                 "id": len(basic_plan["steps"]) + 1,
-                "name": "report_generation",
-                "module": "report_generation",
-                "command": f"python3 report_engine.py {target}",
+                "name": "reporting",
                 "description": "Generate report of findings",
+                "module": "report_engine",
+                "command": f"python3 report_engine.py {target}",
                 "agent": "ReportingAgent",
-                "status": "pending",
-                "priority": 4
+                "priority": 6,
+                "status": "pending"
             })
         
-        # Save fallback plan to database
-        save_plan_to_db(target, basic_plan)
+        # If still no steps, add default steps
+        if len(basic_plan["steps"]) == 0:
+            logger.warning(f"Fallback plan has no steps. Adding default steps.")
+            basic_plan["steps"] = [
+                {
+                    "id": 1,
+                    "name": "content_discovery",
+                    "description": "Discover endpoints and content",
+                    "module": "discover",
+                    "command": f"python3 content_discovery.py {target}",
+                    "agent": "DiscoveryAgent",
+                    "priority": 1,
+                    "status": "pending"
+                },
+                {
+                    "id": 2,
+                    "name": "vulnerability_testing",
+                    "description": "Test endpoints for vulnerabilities",
+                    "module": "fuzzer",
+                    "command": f"python3 fuzzer.py {target}",
+                    "agent": "FuzzerAgent",
+                    "priority": 2,
+                    "status": "pending"
+                },
+                {
+                    "id": 3,
+                    "name": "reporting",
+                    "description": "Generate report of findings",
+                    "module": "report_engine",
+                    "command": f"python3 report_engine.py {target}",
+                    "agent": "ReportingAgent",
+                    "priority": 3,
+                    "status": "pending"
+                }
+            ]
         
         return basic_plan
-
 def save_plan_to_db(target, plan):
     """Save a plan to the database."""
     conn = sqlite3.connect(DB_PATH)
