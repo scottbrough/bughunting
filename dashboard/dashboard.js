@@ -1,108 +1,646 @@
-// Add this to your dashboard.js file to handle report management
-// This extends the existing dashboard with a dedicated reports tab
-
-// Initialize new global variables for reports data
-let reportsData = {};
+// Global state
+let currentTarget = null;
+let targetsData = [];
+let findingsData = [];
+let chainsData = [];
+let runsData = [];
+let learningsData = [];
+let roiData = null;
+let reportsData = [];
 let currentReport = null;
+let findingsChart = null;
+let roiSeverityChart = null;
+let roiTargetsChart = null;
 
-// Modify the DOMContentLoaded event to add the reports tab
+// Initialize dashboard
 document.addEventListener('DOMContentLoaded', () => {
-    // Existing tab setup code...
+    // Set up tab navigation
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const tabContents = document.querySelectorAll('.tab-content');
     
-    // Add reports tab to the tabs list
-    const tabsContainer = document.querySelector('.tabs');
-    if (tabsContainer) {
-        // Add reports tab after the existing tabs
-        const reportsTabButton = document.createElement('button');
-        reportsTabButton.className = 'tab-button';
-        reportsTabButton.setAttribute('data-tab', 'reports');
-        reportsTabButton.textContent = 'Reports';
-        tabsContainer.appendChild(reportsTabButton);
-        
-        // Add reports tab content
-        const mainContent = document.querySelector('.main-content');
-        const tabContainer = mainContent.querySelector('.tab-container');
-        
-        const reportsTabContent = document.createElement('div');
-        reportsTabContent.className = 'tab-content';
-        reportsTabContent.id = 'reports-tab';
-        
-        reportsTabContent.innerHTML = `
-            <div class="card full-width">
-                <h3>Reports Dashboard</h3>
-                <div class="report-summary-stats">
-                    <div class="stat-box">
-                        <div class="stat-label">Total Reports</div>
-                        <div class="stat-value" id="total-reports">0</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-label">Findings</div>
-                        <div class="stat-value" id="total-report-findings">0</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-label">Latest Report</div>
-                        <div class="stat-value" id="latest-report-date">-</div>
-                    </div>
-                </div>
-                <div class="report-filters">
-                    <select id="report-target-filter">
-                        <option value="all">All Targets</option>
-                    </select>
-                    <select id="report-type-filter">
-                        <option value="all">All Types</option>
-                        <option value="html">HTML</option>
-                        <option value="markdown">Markdown</option>
-                    </select>
-                    <button id="refresh-reports">Refresh</button>
-                </div>
-                <div id="reports-table">Loading reports...</div>
-            </div>
+    tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            // Remove active class from all buttons and contents
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            tabContents.forEach(content => content.classList.remove('active'));
             
-            <div class="card full-width" id="report-details-card" style="display: none;">
-                <h3>Report Details</h3>
-                <div id="report-details-content">
-                    <div class="report-header">
-                        <h4 id="report-title">Report Title</h4>
-                        <div class="report-meta">
-                            <span id="report-date">Date: -</span>
-                            <span id="report-target">Target: -</span>
-                            <span id="report-type">Type: -</span>
-                        </div>
-                    </div>
-                    <div class="report-stats-bar">
-                        <div class="stat-item">
-                            <label>Findings:</label>
-                            <span id="report-findings-count">0</span>
-                        </div>
-                        <div class="stat-item">
-                            <label>Chains:</label>
-                            <span id="report-chains-count">0</span>
-                        </div>
-                        <div class="stat-item">
-                            <label>Status:</label>
-                            <span id="report-status">Generated</span>
-                        </div>
-                        <div class="stat-item report-actions">
-                            <button id="view-report">View Report</button>
-                            <button id="download-report">Download</button>
-                        </div>
-                    </div>
-                    <div class="report-findings-preview">
-                        <h5>Findings Summary</h5>
-                        <div id="report-findings-preview"></div>
-                    </div>
-                </div>
-            </div>
-        `;
-        
-        tabContainer.appendChild(reportsTabContent);
-        
-        // Set up event listeners for the reports tab
-        setupReportsTab();
-    }
+            // Add active class to clicked button and corresponding content
+            button.classList.add('active');
+            const tabId = button.getAttribute('data-tab');
+            document.getElementById(`${tabId}-tab`).classList.add('active');
+            
+            // Load tab-specific data if needed
+            if (tabId === 'reports' && reportsData.length === 0) {
+                loadReports();
+            }
+        });
+    });
+    
+    // Load initial data
+    loadTargets();
+    loadAgentStatus();
+    loadRoiData();
+    
+    // Set up event listeners for the reports tab
+    setupReportsTab();
+    
+    // Set up auto-refresh every 60 seconds
+    setInterval(() => {
+        loadAgentStatus();
+        if (currentTarget) {
+            refreshCurrentTargetData();
+        }
+    }, 60000);
 });
 
-// Function to set up reports tab
+// Load targets list
+function loadTargets() {
+    fetch('/api/targets')
+        .then(response => response.json())
+        .then(data => {
+            targetsData = data;
+            displayTargetsList(data);
+        })
+        .catch(error => console.error('Error loading targets:', error));
+}
+
+// Display targets in sidebar
+function displayTargetsList(targets) {
+    const targetsList = document.getElementById('targets-list');
+    if (targets.length === 0) {
+        targetsList.innerHTML = '<p>No targets found.</p>';
+        return;
+    }
+    
+    targetsList.innerHTML = '';
+    targets.forEach(target => {
+        const targetItem = document.createElement('div');
+        targetItem.classList.add('target-item');
+        targetItem.innerHTML = `
+            <strong>${target.target}</strong>
+            <div>${target.findings_count} findings</div>
+        `;
+        
+        targetItem.addEventListener('click', () => {
+            // Remove active class from all target items
+            document.querySelectorAll('.target-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Add active class to clicked item
+            targetItem.classList.add('active');
+            
+            // Set current target and load its data
+            currentTarget = target.target;
+            loadTargetData(target.target);
+        });
+        
+        targetsList.appendChild(targetItem);
+    });
+    
+    // Select first target by default if available
+    if (targets.length > 0 && !currentTarget) {
+        document.querySelector('.target-item').click();
+    }
+}
+
+// Load current target data
+function loadTargetData(target) {
+    Promise.all([
+        fetch(`/api/findings/${target}`).then(res => res.json()),
+        fetch(`/api/chains/${target}`).then(res => res.json()),
+        fetch(`/api/runs/${target}`).then(res => res.json()),
+        fetch(`/api/learnings/${target}`).then(res => res.json())
+    ])
+    .then(([findings, chains, runs, learnings]) => {
+        findingsData = findings;
+        chainsData = chains;
+        runsData = runs;
+        learningsData = learnings;
+        
+        displayTargetSummary(target);
+        displayRecentActivity(runs);
+        displayFindingsChart(findings);
+        displayFindingsTable(findings);
+        displayChainsTable(chains);
+        displayRunsTable(runs);
+        displayLearningsTable(learnings);
+    })
+    .catch(error => console.error('Error loading target data:', error));
+}
+
+// Refresh current target data
+function refreshCurrentTargetData() {
+    if (currentTarget) {
+        loadTargetData(currentTarget);
+    }
+}
+
+// Load agent status
+function loadAgentStatus() {
+    fetch('/api/agent/status')
+        .then(response => response.json())
+        .then(data => {
+            displayAgentStatus(data);
+        })
+        .catch(error => console.error('Error loading agent status:', error));
+}
+
+// Load ROI data
+function loadRoiData() {
+    fetch('/api/roi/summary')
+        .then(response => response.json())
+        .then(data => {
+            roiData = data;
+            displayRoiSummary(data);
+            displayRoiSeverityChart(data);
+            displayRoiTargetsChart(data);
+        })
+        .catch(error => console.error('Error loading ROI data:', error));
+}
+
+// Display target summary
+function displayTargetSummary(target) {
+    const targetInfo = targetsData.find(t => t.target === target);
+    const summaryElement = document.getElementById('target-summary');
+    
+    if (!targetInfo) {
+        summaryElement.innerHTML = '<p>Target information not available.</p>';
+        return;
+    }
+    
+    summaryElement.innerHTML = `
+        <div class="stat-item">
+            <span>Findings:</span>
+            <span>${targetInfo.findings_count}</span>
+        </div>
+        <div class="stat-item">
+            <span>Vulnerability Chains:</span>
+            <span>${targetInfo.chains_count}</span>
+        </div>
+        <div class="stat-item">
+            <span>Total Payout:</span>
+            <span>$${targetInfo.total_payout.toFixed(2)}</span>
+        </div>
+        <div class="stat-item">
+            <span>Time Spent:</span>
+            <span>${targetInfo.total_time_spent?.toFixed(1) || 0} hours</span>
+        </div>
+        <div class="stat-item">
+            <span>Average Hourly Rate:</span>
+            <span>$${targetInfo.avg_hourly_rate?.toFixed(2) || 0}/hr</span>
+        </div>
+        <div class="stat-item">
+            <span>Last Activity:</span>
+            <span>${formatDate(targetInfo.last_activity)}</span>
+        </div>
+    `;
+}
+
+// Display recent activity
+function displayRecentActivity(runs) {
+    const recentActivity = document.getElementById('recent-activity');
+    
+    if (!runs || runs.length === 0) {
+        recentActivity.innerHTML = '<p>No recent activity found.</p>';
+        return;
+    }
+    
+    // Show the 5 most recent runs
+    const recentRuns = runs.slice(0, 5);
+    
+    recentActivity.innerHTML = `
+        <ul class="activity-list">
+            ${recentRuns.map(run => `
+                <li>
+                    <span class="status-${run.status}">${capitalizeFirst(run.status)}</span>
+                    <strong>${run.module}</strong>
+                    <span>${formatDate(run.end_time || run.start_time)}</span>
+                </li>
+            `).join('')}
+        </ul>
+    `;
+}
+
+// Display findings distribution chart
+function displayFindingsChart(findings) {
+    const ctx = document.getElementById('findings-chart');
+    
+    // Count findings by severity
+    const severityCounts = {
+        'critical': 0,
+        'high': 0,
+        'medium': 0,
+        'low': 0,
+        'info': 0
+    };
+    
+    findings.forEach(finding => {
+        const severity = finding.severity.toLowerCase();
+        if (severityCounts.hasOwnProperty(severity)) {
+            severityCounts[severity]++;
+        }
+    });
+    
+    // Destroy existing chart if it exists
+    if (findingsChart) {
+        findingsChart.destroy();
+    }
+    
+    // Create new chart
+    findingsChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Critical', 'High', 'Medium', 'Low', 'Info'],
+            datasets: [{
+                data: [
+                    severityCounts.critical,
+                    severityCounts.high,
+                    severityCounts.medium,
+                    severityCounts.low,
+                    severityCounts.info
+                ],
+                backgroundColor: [
+                    '#d32f2f',
+                    '#f57c00',
+                    '#ffa000',
+                    '#7cb342',
+                    '#64b5f6'
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'right',
+                }
+            }
+        }
+    });
+}
+
+// Display findings table
+function displayFindingsTable(findings) {
+    const tableContainer = document.getElementById('findings-table');
+    
+    if (!findings || findings.length === 0) {
+        tableContainer.innerHTML = '<p>No findings available for this target.</p>';
+        return;
+    }
+    
+    tableContainer.innerHTML = `
+        <table>
+            <thead>
+                <tr>
+                    <th>Host</th>
+                    <th>Vulnerability</th>
+                    <th>Severity</th>
+                    <th>Confidence</th>
+                    <th>Payout</th>
+                    <th>Time</th>
+                    <th>ROI</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${findings.map(finding => `
+                    <tr>
+                        <td>${finding.host}</td>
+                        <td>${finding.vulnerability}</td>
+                        <td class="severity-${finding.severity.toLowerCase()}">${finding.severity}</td>
+                        <td>${(finding.confidence * 100).toFixed()}%</td>
+                        <td>${finding.payout ? '$' + finding.payout.toFixed(2) : '-'}</td>
+                        <td>${finding.time_spent ? finding.time_spent.toFixed(1) + ' hrs' : '-'}</td>
+                        <td>${finding.hourly_rate ? '$' + finding.hourly_rate.toFixed(2) + '/hr' : '-'}</td>
+                        <td>${formatDate(finding.date)}</td>
+                    </tr>
+                `).join('')}
+            </tbody>
+        </table>
+    `;
+}
+
+// Display chains table
+function displayChainsTable(chains) {
+    const tableContainer = document.getElementById('chains-table');
+    
+    if (!chains || chains.length === 0) {
+        tableContainer.innerHTML = '<p>No vulnerability chains available for this target.</p>';
+        return;
+    }
+    
+    tableContainer.innerHTML = `
+        <table>
+            <thead>
+                <tr>
+                    <th>Host</th>
+                    <th>Chain Name</th>
+                    <th>Description</th>
+                    <th>Severity</th>
+                    <th>Findings</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${chains.map(chain => `
+                    <tr>
+                        <td>${chain.host || '-'}</td>
+                        <td>${chain.name}</td>
+                        <td>${chain.description}</td>
+                        <td class="severity-${chain.combined_severity.toLowerCase()}">${chain.combined_severity}</td>
+                        <td>${chain.finding_ids}</td>
+                        <td>${formatDate(chain.date_identified)}</td>
+                    </tr>
+                `).join('')}
+            </tbody>
+        </table>
+    `;
+}
+
+// Display runs table
+function displayRunsTable(runs) {
+    const tableContainer = document.getElementById('runs-table');
+    
+    if (!runs || runs.length === 0) {
+        tableContainer.innerHTML = '<p>No agent runs available for this target.</p>';
+        return;
+    }
+    
+    tableContainer.innerHTML = `
+        <table>
+            <thead>
+                <tr>
+                    <th>Module</th>
+                    <th>Command</th>
+                    <th>Status</th>
+                    <th>Duration</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${runs.map(run => {
+                    // Calculate duration if both start and end times are available
+                    let duration = '-';
+                    if (run.start_time && run.end_time) {
+                        const start = new Date(run.start_time);
+                        const end = new Date(run.end_time);
+                        const durationMs = end - start;
+                        
+                        if (durationMs < 60000) {
+                            duration = `${Math.round(durationMs / 1000)} sec`;
+                        } else {
+                            duration = `${Math.round(durationMs / 60000)} min`;
+                        }
+                    }
+                    
+                    return `
+                        <tr>
+                            <td>${run.module}</td>
+                            <td>${run.command}</td>
+                            <td class="status-${run.status}">${capitalizeFirst(run.status)}</td>
+                            <td>${duration}</td>
+                            <td>${formatDate(run.start_time)}</td>
+                            <td>${formatDate(run.end_time)}</td>
+                        </tr>
+                    `;
+                }).join('')}
+            </tbody>
+        </table>
+    `;
+}
+
+// Display learnings table
+function displayLearningsTable(learnings) {
+    const tableContainer = document.getElementById('learnings-table');
+    
+    if (!learnings || learnings.length === 0) {
+        tableContainer.innerHTML = '<p>No agent learnings available for this target.</p>';
+        return;
+    }
+    
+    tableContainer.innerHTML = `
+        <table>
+            <thead>
+                <tr>
+                    <th>Module</th>
+                    <th>Success</th>
+                    <th>Insight</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${learnings.map(learning => `
+                    <tr>
+                        <td>${learning.module}</td>
+                        <td class="status-${learning.success ? 'completed' : 'failed'}">${learning.success ? 'Yes' : 'No'}</td>
+                        <td>${learning.insight}</td>
+                        <td>${formatDate(learning.date_added)}</td>
+                    </tr>
+                `).join('')}
+            </tbody>
+        </table>
+    `;
+}
+
+// Display agent status
+function displayAgentStatus(statusData) {
+    const statusBadge = document.getElementById('agent-status');
+    const statsContainer = document.getElementById('agent-stats');
+    
+    // Update status badge
+    statusBadge.textContent = `${statusData.active_plans} active plan(s) | ${statusData.success_rate.toFixed(1)}% success rate`;
+    
+    // Update stats container
+    statsContainer.innerHTML = `
+        <div class="stat-item">
+            <span>Active Plans:</span>
+            <span>${statusData.active_plans}</span>
+        </div>
+        <div class="stat-item">
+            <span>Success Rate:</span>
+            <span>${statusData.success_rate.toFixed(1)}%</span>
+        </div>
+        <div class="stat-item">
+            <span>Recent Runs:</span>
+            <span>${statusData.recent_runs.length}</span>
+        </div>
+        <div class="stat-item">
+            <span>Last Updated:</span>
+            <span>${formatDate(statusData.last_updated)}</span>
+        </div>
+        
+        <h3>Recent Learnings</h3>
+        ${statusData.recent_learnings.map(learning => `
+            <div class="learning-item">
+                <small>${learning.target} - ${learning.module}</small>
+                <p>${truncate(learning.insight, 100)}</p>
+            </div>
+        `).join('')}
+    `;
+}
+
+// Display ROI summary
+function displayRoiSummary(data) {
+    const summaryContainer = document.getElementById('roi-summary');
+    
+    if (!data || !data.overall) {
+        summaryContainer.innerHTML = '<p>No ROI data available.</p>';
+        return;
+    }
+    
+    const overall = data.overall;
+    
+    summaryContainer.innerHTML = `
+        <div class="stat-item">
+            <span>Average Hourly Rate:</span>
+            <span>$${overall.avg_hourly_rate.toFixed(2)}/hr</span>
+        </div>
+        <div class="stat-item">
+            <span>Total Payout:</span>
+            <span>$${overall.total_payout.toFixed(2)}</span>
+        </div>
+        <div class="stat-item">
+            <span>Total Time Invested:</span>
+            <span>${overall.total_time.toFixed(1)} hours</span>
+        </div>
+        <div class="stat-item">
+            <span>ROI Tracked Findings:</span>
+            <span>${overall.count}</span>
+        </div>
+    `;
+}
+
+// Display ROI by severity chart
+function displayRoiSeverityChart(data) {
+    const ctx = document.getElementById('roi-severity-chart');
+    
+    if (!data || !data.by_severity || data.by_severity.length === 0) {
+        return;
+    }
+    
+    // Prepare chart data
+    const severities = [];
+    const hourlyRates = [];
+    const payouts = [];
+    
+    data.by_severity.forEach(item => {
+        severities.push(capitalizeFirst(item.severity));
+        hourlyRates.push(item.avg_hourly_rate);
+        payouts.push(item.total_payout);
+    });
+    
+    // Destroy existing chart if it exists
+    if (roiSeverityChart) {
+        roiSeverityChart.destroy();
+    }
+    
+    // Create new chart
+    roiSeverityChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: severities,
+            datasets: [
+                {
+                    label: 'Hourly Rate ($/hr)',
+                    data: hourlyRates,
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1,
+                    yAxisID: 'y'
+                },
+                {
+                    label: 'Total Payout ($)',
+                    data: payouts,
+                    backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1,
+                    yAxisID: 'y1'
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    position: 'left',
+                    title: {
+                        display: true,
+                        text: 'Hourly Rate ($/hr)'
+                    }
+                },
+                y1: {
+                    beginAtZero: true,
+                    position: 'right',
+                    grid: {
+                        drawOnChartArea: false
+                    },
+                    title: {
+                        display: true,
+                        text: 'Total Payout ($)'
+                    }
+                }
+            }
+        }
+    });
+}
+
+// Display ROI by target chart
+function displayRoiTargetsChart(data) {
+    const ctx = document.getElementById('roi-targets-chart');
+    
+    if (!data || !data.top_targets || data.top_targets.length === 0) {
+        return;
+    }
+    
+    // Prepare chart data
+    const targets = [];
+    const hourlyRates = [];
+    
+    data.top_targets.forEach(item => {
+        targets.push(item.target);
+        hourlyRates.push(item.avg_hourly_rate);
+    });
+    
+    // Destroy existing chart if it exists
+    if (roiTargetsChart) {
+        roiTargetsChart.destroy();
+    }
+    
+    // Create new chart
+    roiTargetsChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: targets,
+            datasets: [{
+                label: 'Hourly Rate ($/hr)',
+                data: hourlyRates,
+                backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Hourly Rate ($/hr)'
+                    }
+                }
+            }
+        }
+    });
+}
+
+// Set up reports tab
 function setupReportsTab() {
     // Set up event listeners for filter controls
     const targetFilter = document.getElementById('report-target-filter');
@@ -142,17 +680,14 @@ function setupReportsTab() {
     });
 }
 
-// Function to load reports data
+// Load reports data
 function loadReports() {
     // Show loading state
     document.getElementById('reports-table').innerHTML = 'Loading reports...';
     
-    // Get current target selection if available
-    const currentTarget = currentTarget || "all";
-    
     // Build API endpoint
     let endpoint = '/api/reports';
-    if (currentTarget !== "all") {
+    if (currentTarget !== "all" && currentTarget) {
         endpoint = `/api/reports/${currentTarget}`;
     }
     
@@ -178,7 +713,7 @@ function loadReports() {
         });
 }
 
-// Function to update target filter options
+// Update target filter options
 function updateTargetFilterOptions(data) {
     const targetFilter = document.getElementById('report-target-filter');
     if (targetFilter) {
@@ -209,7 +744,7 @@ function updateTargetFilterOptions(data) {
     }
 }
 
-// Function to update report stats
+// Update report stats
 function updateReportStats(data) {
     // Update total reports count
     document.getElementById('total-reports').textContent = data.length;
@@ -220,17 +755,16 @@ function updateReportStats(data) {
     
     // Find latest report date
     if (data.length > 0) {
-        const latestReport = data.reduce((latest, report) => {
-            const reportDate = new Date(report.date);
-            return reportDate > new Date(latest.date) ? report : latest;
-        }, data[0]);
+        // Sort by date (newest first)
+        const sortedReports = [...data].sort((a, b) => new Date(b.date) - new Date(a.date));
+        const latestReport = sortedReports[0];
         
         document.getElementById('latest-report-date').textContent = 
-            new Date(latestReport.date).toLocaleDateString();
+            formatDate(latestReport.date);
     }
 }
 
-// Function to display reports table
+// Display reports table
 function displayReportsTable(data) {
     const tableContainer = document.getElementById('reports-table');
     
@@ -384,89 +918,23 @@ function loadFindingsPreview(report) {
         });
 }
 
-// Add required CSS to your styles.css file
-
-/*
-Add this to your styles.css file:
-
-.report-summary-stats {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
+// Helper function to format dates
+function formatDate(dateString) {
+    if (!dateString) return '-';
+    
+    const date = new Date(dateString);
+    return date.toLocaleString();
 }
 
-.report-filters {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
+// Helper function to capitalize first letter
+function capitalizeFirst(string) {
+    if (!string) return '';
+    return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-.report-filters select, .report-filters button {
-    padding: 8px 12px;
-    border: 1px solid #e1e4e8;
-    border-radius: 4px;
+// Helper function to truncate text
+function truncate(text, maxLength) {
+    if (!text) return '';
+    if (text.length <= maxLength) return text;
+    return text.slice(0, maxLength) + '...';
 }
-
-.report-filters button {
-    background-color: #1976d2;
-    color: white;
-    cursor: pointer;
-}
-
-.report-header {
-    margin-bottom: 20px;
-}
-
-.report-meta {
-    display: flex;
-    gap: 20px;
-    color: #666;
-    margin-top: 5px;
-}
-
-.report-stats-bar {
-    display: flex;
-    justify-content: space-between;
-    background-color: #f8f9fa;
-    padding: 12px;
-    border-radius: 4px;
-    margin-bottom: 20px;
-}
-
-.stat-item label {
-    font-weight: bold;
-    margin-right: 5px;
-}
-
-.report-actions {
-    display: flex;
-    gap: 10px;
-}
-
-.report-actions button {
-    padding: 5px 10px;
-    background-color: #1976d2;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.view-details-btn {
-    padding: 5px 10px;
-    background-color: #1976d2;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.report-findings-preview {
-    margin-top: 20px;
-}
-
-.view-more {
-    text-align: right;
-    margin-top: 10px;
-}
-*/

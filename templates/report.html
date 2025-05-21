@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ report.title }}</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        
+        h2 {
+            color: #2c3e50;
+            margin-top: 30px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+        }
+        
+        h3 {
+            color: #3498db;
+        }
+        
+        .exec-summary {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-left: 5px solid #3498db;
+            margin-bottom: 30px;
+        }
+        
+        .finding {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .finding h3 {
+            margin-top: 0;
+        }
+        
+        .severity-high {
+            border-left: 5px solid #e74c3c;
+        }
+        
+        .severity-medium {
+            border-left: 5px solid #f39c12;
+        }
+        
+        .severity-low {
+            border-left: 5px solid #2ecc71;
+        }
+        
+        .severity-info {
+            border-left: 5px solid #3498db;
+        }
+        
+        .severity-label {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 3px;
+            font-weight: bold;
+            color: white;
+        }
+        
+        .severity-high .severity-label {
+            background-color: #e74c3c;
+        }
+        
+        .severity-medium .severity-label {
+            background-color: #f39c12;
+        }
+        
+        .severity-low .severity-label {
+            background-color: #2ecc71;
+        }
+        
+        .severity-info .severity-label {
+            background-color: #3498db;
+        }
+        
+        .meta-info {
+            color: #7f8c8d;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+        }
+        
+        .evidence {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 3px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            margin-top: 10px;
+        }
+        
+        .remediation {
+            background-color: #eafaf1;
+            padding: 15px;
+            border-radius: 3px;
+            margin-top: 15px;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #7f8c8d;
+        }
+        
+        .stats {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin: 30px 0;
+        }
+        
+        .stat-box {
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            padding: 15px;
+            min-width: 150px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #3498db;
+            margin: 10px 0;
+        }
+        
+        .stat-label {
+            color: #7f8c8d;
+        }
+        
+        .chain {
+            background-color: #f0f7fb;
+            border: 1px solid #d0e3ef;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .chain-steps {
+            margin-left: 20px;
+        }
+        
+        @media print {
+            body {
+                font-size: 12pt;
+            }
+            
+            .finding, .chain {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>{{ report.title }}</h1>
+        <p>{{ report.generated_at }}</p>
+    </header>
+    
+    <div class="exec-summary">
+        <h2>Executive Summary</h2>
+        {{ report.executive_summary|safe }}
+        
+        <div class="stats">
+            <div class="stat-box">
+                <div class="stat-label">Vulnerabilities</div>
+                <div class="stat-value">{{ report.stats.total_findings }}</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">Critical</div>
+                <div class="stat-value">{{ report.stats.critical_count }}</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">High</div>
+                <div class="stat-value">{{ report.stats.high_count }}</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">Medium</div>
+                <div class="stat-value">{{ report.stats.medium_count }}</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">Low</div>
+                <div class="stat-value">{{ report.stats.low_count }}</div>
+            </div>
+        </div>
+    </div>
+    
+    <h2>Findings Overview</h2>
+    <p>{{ report.findings_overview|safe }}</p>
+    
+    <h2>Detailed Findings</h2>
+    {% for finding in report.findings %}
+        <div class="finding severity-{{ finding.severity|lower }}">
+            <h3>{{ finding.title }}</h3>
+            <div class="meta-info">
+                <span class="severity-label">{{ finding.severity|upper }}</span>
+                <span> | Host: {{ finding.host }}</span>
+                <span> | Confidence: {{ finding.confidence }}%</span>
+                <span> | Date: {{ finding.date }}</span>
+            </div>
+            
+            <h4>Description</h4>
+            <div>{{ finding.description|safe }}</div>
+            
+            <h4>Technical Details</h4>
+            <div>{{ finding.technical_details|safe }}</div>
+            
+            {% if finding.evidence %}
+            <h4>Evidence</h4>
+            <div class="evidence">{{ finding.evidence }}</div>
+            {% endif %}
+            
+            <h4>Business Impact</h4>
+            <div>{{ finding.business_impact|safe }}</div>
+            
+            <div class="remediation">
+                <h4>Remediation</h4>
+                {{ finding.remediation|safe }}
+            </div>
+        </div>
+    {% endfor %}
+    
+    {% if report.chains %}
+    <h2>Attack Chains</h2>
+    <p>{{ report.chains_overview|safe }}</p>
+    
+    {% for chain in report.chains %}
+        <div class="chain">
+            <h3>{{ chain.name }}</h3>
+            <div class="meta-info">
+                <span class="severity-label">{{ chain.severity|upper }}</span>
+                <span> | Host: {{ chain.host }}</span>
+                <span> | Date: {{ chain.date }}</span>
+            </div>
+            
+            <h4>Description</h4>
+            <div>{{ chain.description|safe }}</div>
+            
+            <h4>Attack Path</h4>
+            <div class="chain-steps">
+                <ol>
+                {% for step in chain.steps %}
+                    <li>{{ step|safe }}</li>
+                {% endfor %}
+                </ol>
+            </div>
+            
+            <h4>Business Impact</h4>
+            <div>{{ chain.business_impact|safe }}</div>
+            
+            <div class="remediation">
+                <h4>Remediation</h4>
+                {{ chain.remediation|safe }}
+            </div>
+        </div>
+    {% endfor %}
+    {% endif %}
+    
+    <h2>Methodology</h2>
+    <div>{{ report.methodology|safe }}</div>
+    
+    <h2>Recommendations</h2>
+    <div>{{ report.recommendations|safe }}</div>
+    
+    <footer>
+        <p>Report generated by the AI Bug Bounty Agent on {{ report.generated_at }}</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bug Bounty Agent Dashboard</title>
+    <link rel="stylesheet" href="/dashboard/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <h1>🛠️ Bug Bounty Agent Dashboard</h1>
+        <div class="status-badge" id="agent-status">Loading...</div>
+    </header>
+    
+    <div class="dashboard-container">
+        <div class="sidebar">
+            <div class="section">
+                <h2>Targets</h2>
+                <div id="targets-list" class="targets-list">Loading targets...</div>
+            </div>
+            <div class="section">
+                <h2>Agent Stats</h2>
+                <div id="agent-stats" class="agent-stats">Loading stats...</div>
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <div class="tab-container">
+                <div class="tabs">
+                    <button class="tab-button active" data-tab="overview">Overview</button>
+                    <button class="tab-button" data-tab="findings">Findings</button>
+                    <button class="tab-button" data-tab="chains">Chains</button>
+                    <button class="tab-button" data-tab="runs">Agent Runs</button>
+                    <button class="tab-button" data-tab="roi">ROI Analysis</button>
+                    <button class="tab-button" data-tab="reports">Reports</button>
+                </div>
+                
+                <div class="tab-content active" id="overview-tab">
+                    <div class="card">
+                        <h3>Target Summary</h3>
+                        <div id="target-summary">Select a target</div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>Recent Activity</h3>
+                        <div id="recent-activity">Select a target</div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>Findings Distribution</h3>
+                        <div class="chart-container">
+                            <canvas id="findings-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="findings-tab">
+                    <div class="card full-width">
+                        <h3>Vulnerabilities Found</h3>
+                        <div id="findings-table">Select a target</div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="chains-tab">
+                    <div class="card full-width">
+                        <h3>Vulnerability Chains</h3>
+                        <div id="chains-table">Select a target</div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="runs-tab">
+                    <div class="card full-width">
+                        <h3>Agent Execution History</h3>
+                        <div id="runs-table">Select a target</div>
+                    </div>
+                    
+                    <div class="card full-width">
+                        <h3>Agent Learnings</h3>
+                        <div id="learnings-table">Select a target</div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="roi-tab">
+                    <div class="card">
+                        <h3>ROI Summary</h3>
+                        <div id="roi-summary">Loading ROI data...</div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>ROI by Severity</h3>
+                        <div class="chart-container">
+                            <canvas id="roi-severity-chart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>Most Profitable Targets</h3>
+                        <div class="chart-container">
+                            <canvas id="roi-targets-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="reports-tab">
+                    <div class="card full-width">
+                        <h3>Reports Dashboard</h3>
+                        <div class="report-summary-stats">
+                            <div class="stat-box">
+                                <div class="stat-label">Total Reports</div>
+                                <div class="stat-value" id="total-reports">0</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-label">Findings</div>
+                                <div class="stat-value" id="total-report-findings">0</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-label">Latest Report</div>
+                                <div class="stat-value" id="latest-report-date">-</div>
+                            </div>
+                        </div>
+                        <div class="report-filters">
+                            <select id="report-target-filter">
+                                <option value="all">All Targets</option>
+                            </select>
+                            <select id="report-type-filter">
+                                <option value="all">All Types</option>
+                                <option value="html">HTML</option>
+                                <option value="markdown">Markdown</option>
+                            </select>
+                            <button id="refresh-reports">Refresh</button>
+                        </div>
+                        <div id="reports-table">Loading reports...</div>
+                    </div>
+                    
+                    <div class="card full-width" id="report-details-card" style="display: none;">
+                        <h3>Report Details</h3>
+                        <div id="report-details-content">
+                            <div class="report-header">
+                                <h4 id="report-title">Report Title</h4>
+                                <div class="report-meta">
+                                    <span id="report-date">Date: -</span>
+                                    <span id="report-target">Target: -</span>
+                                    <span id="report-type">Type: -</span>
+                                </div>
+                            </div>
+                            <div class="report-stats-bar">
+                                <div class="stat-item">
+                                    <label>Findings:</label>
+                                    <span id="report-findings-count">0</span>
+                                </div>
+                                <div class="stat-item">
+                                    <label>Chains:</label>
+                                    <span id="report-chains-count">0</span>
+                                </div>
+                                <div class="stat-item">
+                                    <label>Status:</label>
+                                    <span id="report-status">Generated</span>
+                                </div>
+                                <div class="stat-item report-actions">
+                                    <button id="view-report">View Report</button>
+                                    <button id="download-report">Download</button>
+                                </div>
+                            </div>
+                            <div class="report-findings-preview">
+                                <h5>Findings Summary</h5>
+                                <div id="report-findings-preview"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="/dashboard/dashboard.js"></script>
+</body>
+</html>
