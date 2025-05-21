@@ -1,3 +1,79 @@
-autogen-env
-config
+# API Keys and Credentials
+.env
+*.env
 config/config.json
+**/config.json
+**/*.key
+**/*_key*
+**/*api_key*
+**/*apikey*
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+bugbounty.db
+
+# Workspace and findings
+workspace/
+**/workspace/
+**/reports/
+findings/
+
+# Log files
+*.log
+logs/
+**/logs/
+
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv/
+.env/
+
+# IDE specific files
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+.ipynb_checkpoints
+
+# Test and cache directories
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# Generated files
+dashboard/generated/
+**/generated_reports/
+
+# ML models and data
+models/
+**/models/
+ml/data/
+**/ml/data/
