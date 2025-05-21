@@ -3507,3 +3507,21 @@ Content discovery cancelled by user.
 2025-05-21 02:25:03,479 - INFO - Generating html report for kayak.com
 2025-05-21 02:25:03,505 - INFO - Report generated and saved to workspace/kayak.com/reports/report_20250521_022503.html
 2025-05-21 02:25:03,505 - INFO - Sending message: 🏆 RESULT [ReportingAgent]: generate_report
+2025-05-21 02:32:47,004 - INFO - Fetching HackerOne programs...
+2025-05-21 02:32:55,975 - INFO - Fetched 100 HackerOne programs so far
+2025-05-21 02:33:07,418 - INFO - Fetched 200 HackerOne programs so far
+2025-05-21 02:33:17,529 - INFO - Fetched 300 HackerOne programs so far
+2025-05-21 02:33:27,033 - INFO - Fetched 400 HackerOne programs so far
+2025-05-21 02:33:36,745 - INFO - Fetched 458 HackerOne programs so far
+2025-05-21 02:33:36,757 - INFO - Processed 458 HackerOne programs
+2025-05-21 02:33:36,947 - INFO - Added 2 new programs, updated 456 existing programs
+2025-05-21 02:33:36,947 - INFO - Fetching Bugcrowd programs...
+2025-05-21 02:33:37,211 - ERROR - Error fetching Bugcrowd programs: 404
+2025-05-21 02:33:37,211 - INFO - Program data update complete
+2025-05-21 02:33:37,228 - INFO - Found 458 programs matching the criteria
+2025-05-21 02:33:43,170 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 02:38:58,789 - ERROR - No programs found matching the criteria
+2025-05-21 02:39:37,594 - ERROR - No programs found matching the criteria
+2025-05-21 02:40:01,600 - INFO - Found 458 programs matching the criteria
+2025-05-21 02:40:08,908 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-21 02:40:08,925 - INFO - Recommendations saved to recommendations.csv

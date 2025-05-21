@@ -1,0 +1,108 @@
+Complete System Documentation
+1. System Architecture
+Your bug bounty automation system consists of:
+
+Orchestrator Agent: Coordinates workflow and delegates tasks
+Discovery Agent: Finds endpoints and content
+Fuzzer Agent: Tests endpoints for vulnerabilities
+Reporting Agent: Creates vulnerability reports
+Program Selector: Identifies valuable bug bounty programs
+Dashboard: Web interface for monitoring
+
+2. Command Reference
+Program Selector
+bashpython program_selector.py [OPTIONS]
+ParameterDescriptionExample--updateUpdate program data from platforms--update--recommend NRecommend top N programs--recommend 5--platformFilter by platform (all, hackerone, bugcrowd, intigriti, yeswehack)--platform hackerone--min-payoutMinimum average payout--min-payout 500--outputOutput file for recommendations (CSV)--output recs.csv--profileProfile for recommendations (high_reward, quick_wins, learning, custom)--profile high_reward--skillsComma-separated list of your skills/focuses--skills "API,XSS,SSRF"--filterFilter programs by keyword--filter financial--verboseEnable verbose output--verbose
+Main Agent Control
+bashpython bugbounty_agent.py [OPTIONS]
+ParameterDescriptionExample--targetSpecific target to focus on--target example.com--modeOperation mode (plan, execute, analyze, full)--mode full--stepsSpecific steps to run, comma-separated--steps discover,fuzz--autoRun in fully autonomous mode--auto--max-targetsMaximum targets to process--max-targets 3--verboseEnable verbose output--verbose
+Content Discovery
+bashpython content_discovery.py TARGET [OPTIONS]
+ParameterDescriptionExample--batch-sizeNumber of hosts to process in parallel--batch-size 5--depthRecursion depth--depth 2--threadsNumber of threads per host--threads 10--wordlistCustom wordlist for fuzzing--wordlist path/to/list.txt--extensionsExtensions to fuzz--extensions php,html,js--ai-batch-sizeBatch size for AI classification--ai-batch-size 100--skip-aiSkip AI classification of results--skip-ai--output-dirOutput directory for results--output-dir ./results--timeoutRequest timeout in seconds--timeout 20--max-endpointsMaximum endpoints to process per target--max-endpoints 500--verboseEnable verbose output--verbose
+Fuzzer
+bashpython fuzzer.py TARGET [OPTIONS]
+ParameterDescriptionExample--urlSpecific URL to fuzz--url https://example.com/api--paramSpecific parameter to fuzz--param id--vuln-typeVulnerability type to test for--vuln-type sqli--threadsNumber of threads--threads 5--delayDelay between requests in seconds--delay 0.2--timeoutRequest timeout in seconds--timeout 10--max-urlsMaximum number of URLs to test--max-urls 25--max-payloadsMaximum number of payloads per URL--max-payloads 15--user-agentCustom User-Agent string--user-agent "Mozilla/5.0..."--cookiesCookies to include with requests--cookies "session=123"--headersAdditional headers--headers "X-Custom:val"--outputOutput file for results (JSON)--output results.json--verboseEnable verbose output--verbose
+Dashboard
+bashpython agent_dashboard.py [OPTIONS]
+ParameterDescriptionExample--portPort to run the dashboard on--port 5000--hostHost to run the dashboard on--host 0.0.0.0--debugRun in debug mode--debug
+3. Workflow Optimization
+Recommended Workflow
+
+Select Programs:
+bashpython program_selector.py --profile high_reward --recommend 10 --min-payout 500 --output targets.csv
+
+Discovery Phase:
+bashpython content_discovery.py example.com --depth 2 --threads 10 --extensions php,html,js,txt,json,xml,config,bak,old,backup,sql,env
+
+Fuzzing Phase:
+bashpython fuzzer.py example.com --vuln-type all --threads 10 --delay 0.2 --max-urls 50
+
+Automated Full Pipeline:
+bashpython bugbounty_agent.py --target example.com --mode full --auto
+
+View Results:
+bashpython agent_dashboard.py
+
+
+Optimization Tips
+
+Content Discovery: Use larger wordlists for more thorough discovery
+Fuzzing: Focus on high-impact vulnerabilities (RCE, SQLi, SSRF) for better payouts
+Threading: Adjust thread count based on your system's capabilities
+Rate Limiting: Use appropriate delays to avoid being blocked
+
+4. Revenue Maximization Strategy
+Short-term Tactics
+
+High-Value Programs: Target programs with average payouts above $1000
+Critical Vulnerabilities: Prioritize RCE, SQLi, and authentication bypass tests
+Batch Testing: Run on 5-10 programs simultaneously
+Quick Reporting: Submit high-confidence findings promptly
+
+Long-term Strategy
+
+Track Success Rates: Monitor which program types yield the most payouts
+Refine Payloads: Update fuzzer with successful payloads that found bugs
+Build Reputation: Focus on quality reports to build credibility with programs
+Continuous Learning: Use the agent_learnings system to improve targeting
+
+5. Dashboard Setup Verification
+Database Connection Check
+bashsqlite3 bugbounty.db "SELECT COUNT(*) FROM findings"
+sqlite3 bugbounty.db "SELECT COUNT(*) FROM endpoints"
+sqlite3 bugbounty.db "SELECT COUNT(*) FROM agent_runs"
+Dashboard Routes Check
+
+http://localhost:5000/api/targets - Should list all targets
+http://localhost:5000/api/findings/example.com - Findings for a target
+http://localhost:5000/api/agent/status - Should show agent status
+
+Manual Data Entry Test
+bashsqlite3 bugbounty.db "INSERT INTO findings (target, host, vulnerability, severity, confidence, date, status) VALUES ('test.com', 'https://test.com', 'Test Vulnerability', 'high', 0.9, datetime('now'), 'new')"
+Then refresh the dashboard to see if the new finding appears.
+6. Future Development Roadmap
+Phase 1: Enhanced Scanning
+
+Improve wordlists for discovery
+Add more fuzzing techniques
+Integrate passive reconnaissance tools
+
+Phase 2: Automated Submission
+
+Create an API integration for bug bounty platforms
+Develop automated submission system
+Build a report template customizer
+
+Phase 3: Machine Learning Enhancements
+
+Develop ML models to predict vulnerability likelihood
+Create smart resource allocation based on success probability
+Implement learning from bounty reports
+
+Phase 4: Collaborative Features
+
+Support multi-user operation
+Add collaboration tools for teams
+Create notification system for new findings
+
+This documentation should help you remember all the available parameters and provide a clear path for maximizing returns and future development.
