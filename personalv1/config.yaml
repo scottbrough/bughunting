@@ -1,0 +1,84 @@
+# Personal Bug Bounty Assistant Configuration
+
+# API Configuration
+openai:
+  model: "gpt-4"  # or "gpt-3.5-turbo" for faster/cheaper operations
+  temperature: 0.7
+  max_tokens: 4000
+
+# Tool Integration (set to false if tools not installed)
+tools:
+  subfinder: true
+  amass: false  # Set to true if you have amass installed
+  ffuf: false   # Set to true if you have ffuf installed
+  httpx: false  # Set to true if you have httpx installed
+  nuclei: false # Set to true if you have nuclei installed
+
+# Recon Settings
+recon:
+  max_subdomains: 20
+  max_endpoints_per_target: 50
+  timeout: 10
+  threads: 5
+  common_paths:
+    - "/"
+    - "/admin"
+    - "/api"
+    - "/login"
+    - "/dashboard"
+    - "/config"
+    - "/backup"
+    - "/test"
+    - "/dev"
+    - "/staging"
+    - "/uploads"
+    - "/files"
+    - "/docs"
+    - "/swagger"
+    - "/graphql"
+    - "/robots.txt"
+    - "/sitemap.xml"
+    - "/.env"
+    - "/.git"
+    - "/wp-admin"
+    - "/wp-content"
+    - "/phpinfo.php"
+    - "/server-status"
+    - "/api/v1"
+    - "/api/v2"
+
+# Vulnerability Testing
+testing:
+  max_payloads_per_endpoint: 10
+  payload_timeout: 10
+  focus_vulnerabilities:
+    - "xss"
+    - "sqli"
+    - "ssrf"
+    - "lfi"
+    - "rce"
+    - "idor"
+    - "auth_bypass"
+
+# Report Settings
+reporting:
+  include_screenshots: false
+  include_poc_scripts: true
+  severity_mapping:
+    critical: 9.0
+    high: 7.0
+    medium: 5.0
+    low: 3.0
+    info: 1.0
+
+# Custom wordlists (if you have them)
+wordlists:
+  directories: null  # Path to custom directory wordlist
+  subdomains: null   # Path to custom subdomain wordlist
+  parameters: null   # Path to custom parameter wordlist
+
+# Output preferences
+output:
+  save_raw_responses: false
+  compress_workspace: false
+  auto_cleanup_days: 30

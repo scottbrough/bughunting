@@ -1,0 +1,76 @@
+# requirements.txt
+openai>=1.0.0
+requests>=2.31.0
+pyyaml>=6.0
+pathlib2>=2.3.7
+typing_extensions>=4.0.0
+
+# Optional - for enhanced functionality
+dnspython>=2.3.0
+beautifulsoup4>=4.12.0
+colorama>=0.4.6
+
+# setup.sh
+#!/bin/bash
+
+echo "🛠️  Setting up Personal Bug Bounty Assistant"
+echo "=============================================="
+
+# Check Python version
+python_version=$(python3 --version 2>&1 | cut -d' ' -f2 | cut -d'.' -f1-2)
+echo "Python version: $python_version"
+
+if ! command -v python3 &> /dev/null; then
+    echo "❌ Python 3 is required but not installed"
+    exit 1
+fi
+
+# Install Python requirements
+echo "📦 Installing Python packages..."
+pip3 install -r requirements.txt
+
+# Check for optional tools
+echo "🔍 Checking for optional security tools..."
+
+check_tool() {
+    if command -v $1 &> /dev/null; then
+        echo "✅ $1 is installed"
+        return 0
+    else
+        echo "⚠️  $1 not found - $2"
+        return 1
+    fi
+}
+
+check_tool "subfinder" "install with: go install github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest"
+check_tool "httpx" "install with: go install github.com/projectdiscovery/httpx/cmd/httpx@latest"
+check_tool "ffuf" "install with: go install github.com/ffuf/ffuf@latest"
+check_tool "nuclei" "install with: go install github.com/projectdiscovery/nuclei/v2/cmd/nuclei@latest"
+check_tool "amass" "install with: sudo apt install amass"
+
+# Set up environment
+echo "🔧 Setting up environment..."
+
+# Create config file if it doesn't exist
+if [ ! -f "config.yaml" ]; then
+    echo "📝 Creating default config.yaml"
+    # The config.yaml content would be copied here
+fi
+
+# Check for API key
+if [ -z "$OPENAI_API_KEY" ]; then
+    echo "⚠️  OpenAI API key not set in environment"
+    echo "   Set with: export OPENAI_API_KEY='your-key-here'"
+    echo "   Or use --api-key when running the tool"
+fi
+
+echo ""
+echo "🎉 Setup complete!"
+echo ""
+echo "Usage examples:"
+echo "  python3 bb_assistant.py example.com"
+echo "  python3 bb_assistant.py example.com --program-info 'HackerOne program with $500-5000 range'"
+echo "  python3 bb_assistant.py example.com --verbose"
+echo ""
+echo "Make sure to set your OpenAI API key:"
+echo "  export OPENAI_API_KEY='your-api-key-here'"
